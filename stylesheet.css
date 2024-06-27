@@ -327,7 +327,67 @@ main {
 }
 
 /* Booking styles */
+.booking-form {
+    background: #fff;
+    padding: 2rem 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.booking-form .container {
+    text-align: center;
+}
+
+.booking-form h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.booking-form p {
+    margin-bottom: 20px;
+    color: #666;
+    font-size: 1.1em;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.form-group input[type="date"],
+.form-group input[type="time"] {
+    width: calc(100% - 12px); /* Adjust to fit within borders */
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    background: var(--primary-color);
+    color: var(--color);
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.1em;
+    transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+    background: #0c2646;
+}
 
 /* Login styles */
 
