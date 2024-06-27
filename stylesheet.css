@@ -256,7 +256,75 @@ main {
 }
 
 /* About us styles */
+.about-us {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 1100px;
+}
 
+.about-us h2 {
+    margin-bottom: 20px;
+    color: #000;
+    font-size: 2em;
+}
+
+.about-us p {
+    margin: 20px 0;
+    line-height: 1.6;
+    color: #666;
+    font-size: 1.1em;
+}
+
+.about-us h3 {
+    margin-top: 40px;
+    color: #000;
+    font-size: 1.5em;
+}
+
+.team {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.team-member {
+    width: 200px;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.team-member img {
+    width: 100%;
+    border-radius: 50%;
+    border: 5px solid #1e90ff;
+}
+
+.team-member h4 {
+    margin: 10px 0 5px;
+    color: #000;
+    font-size: 1.2em;
+}
+
+.team-member p {
+    margin: 0;
+    color: #666;
+    font-size: 1em;
+}
 
 /* Booking styles */
 
