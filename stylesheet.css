@@ -474,7 +474,7 @@ button[type="submit"]:hover {
 }
 
 /* cars styles */
-/* .cars-list {
+.cars-list {
     padding: 4rem 0;
     background: #f8f8f8;
     color: #333;
@@ -555,9 +555,9 @@ button[type="submit"]:hover {
 
 .car-details .button {
     margin-top: 20px;
-} */
+}
 /* Cars page styles */
-.cars-list {
+/* .cars-list {
     padding: 4rem 0;
     background: #f8f8f8;
     color: #333;
@@ -605,10 +605,7 @@ button[type="submit"]:hover {
 .car-card p {
     font-size: 1.1rem;
     color: #666;
-}
-
-
-
+} */
 
 
 /* Footer styles */
@@ -628,3 +625,81 @@ footer .container {
 footer p {
     margin: 0;
 }
+
+/* Car details styles */
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--color);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.back-button:hover {
+    background-color: #0c2646;
+    transform: scale(1.02);
+}
+.car-details {
+    padding: 2rem;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 1100px;
+    text-align: center;
+}
+
+.car-details h2 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    color: #000;
+}
+
+.car-details img {
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.car-details p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.car-details .button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: var(--color);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.car-details .button:hover {
+    background-color: #0c2646;
+    transform: scale(1.02);
+}
+/* Register styles */
+
+/* forgot password styles */
+
+/* bill styles */
+
+/* booking comfirm styles */
+
+/* my booking */
