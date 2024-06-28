@@ -30,7 +30,7 @@ $car = $result->fetch_assoc();
 
 <?php if ($car): ?>
 <div class="car-details">
-    <img src="images/<?php echo $car['image_path']; ?>" alt="Car Image">
+    <img src="image/<?php echo $car['image_path']; ?>" alt="Car Image">
     <div class="car-info">
         <h2><?php echo $car['make'] . " " . $car['model']; ?></h2>
         <p>Year: <?php echo $car['year']; ?></p>
