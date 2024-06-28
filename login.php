@@ -5,7 +5,7 @@ session_start(); // Start the session
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ass1";
+$dbname = "rent";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,6 +14,8 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+$error_message = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Check in Employee table
-    $stmt = $conn->prepare("SELECT employee_id, password FROM Employee WHERE email = ?");
+    $stmt = $conn->prepare("SELECT emp_id, password FROM Employee WHERE email = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
@@ -73,7 +75,7 @@ $conn->close();
             <h1>Rent-A-Wheel</h1>
             <nav>
                 <ul>
-                <li><a href="homepage.php">Home</a></li>
+                    <li><a href="homepage.php">Home</a></li>
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
@@ -87,13 +89,16 @@ $conn->close();
     <div class="login-container">
         <div class="login-box">
             <h2>Login</h2>
-            <form action="your_login_script.php" method="POST">
-                <input type="text" name="username" placeholder="Username" required>
+            <?php if ($error_message): ?>
+                <p class="error"><?php echo $error_message; ?></p>
+            <?php endif; ?>
+            <form action="login.php" method="POST">
+                <input type="text" name="username" placeholder="Username (email address)" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
-            <a href="forgot_password.html">Forgot Password?</a>
-            <a href="register.html">Don't have an account? Register</a>
+            <a href="forgot_password.php">Forgot Password?</a>
+            <a href="register.php">Don't have an account? Register</a>
         </div>
     </div>
 
