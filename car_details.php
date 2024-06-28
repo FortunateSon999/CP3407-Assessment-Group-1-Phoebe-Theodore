@@ -24,10 +24,12 @@ $car = $result->fetch_assoc();
 <html>
 <head>
     <title>Car Details</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-
+    <div class="back-button-container">
+        <a href="cars.php" class="back-button">Back to Cars</a>
+    </div>
 <?php if ($car): ?>
 <div class="car-details">
     <img src="image/<?php echo $car['image_path']; ?>" alt="Car Image">
@@ -42,7 +44,7 @@ $car = $result->fetch_assoc();
     </div>
 </div>
 <?php else: ?>
-<p>Car not found.</p>
+    <p>Car details not available.</p>
 <?php endif; ?>
 
 <?php $conn->close(); ?>
