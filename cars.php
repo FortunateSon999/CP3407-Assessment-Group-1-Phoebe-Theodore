@@ -22,7 +22,7 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rent-A-Wheel</title>
     <link rel="stylesheet" href="stylesheet.css">
@@ -44,29 +44,28 @@ $result = $conn->query($sql);
     </header>
 
     <main>
-        <h1>Car Listings</h1>
-
-        <div class="car-list">
-        <?php
-        if ($result->num_rows > 0) {
-            // Output data for each car
-            while($row = $result->fetch_assoc()) {
-                echo "<div class='car'>";
-                echo "<img src='image/" . $row["image_path"] . "' alt='Car Image'>";
-                echo "<div class='car-info'>";
-                echo "<h2>" . $row["make"] . " " . $row["model"] . "</h2>";
-                echo "<p>Year: " . $row["year"] . "</p>";
-                echo "<p>Price per Day: $" . $row["price_per_day"] . "</p>";
-                echo "<a href='car_details.php?car_id=" . $row["car_id"] . "' class='button'>View Details</a>";
-                echo "</div>";
-                echo "</div>";
-            }
-        } else {
-            echo "No cars available.";
-        }
-        $conn->close();
-        ?>
-        </div>
+        <section class="cars-list">
+            <div class="container">
+                <h2>Available Cars</h2>
+                <?php
+                if ($result->num_rows > 0) {
+                    // Output data for each car
+                    while($row = $result->fetch_assoc()) {
+                        echo "
+                        <div class='car-card'>
+                            <img src='image/" . $row["image_path"] . "' alt='" . $row["make"] . " " . $row["model"] . "'>
+                            <h3>" . $row["make"] . " " . $row["model"] . "</h3>
+                            <p>$" . $row["price_per_day"] . " per day</p>
+                            <a href='car_details.php?car_id=" . $row["car_id"] . "' class='button'>View Details</a>
+                        </div>";
+                    }
+                } else {
+                    echo "<p>No cars available.</p>";
+                }
+                $conn->close();
+                ?>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -74,6 +73,6 @@ $result = $conn->query($sql);
             <p>&copy; 2024 Rent-A-Wheel. All rights reserved.</p>
         </div>
     </footer>
-
 </body>
 </html>
+
