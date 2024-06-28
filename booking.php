@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Assuming customer_id is stored in the session after login
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
+    header("Location: login.php");
+    exit();
+}
+
+$customer_id = $_SESSION['user_id'];
+
+// Assuming car_id is passed as a GET parameter when navigating to this page
+$car_id = isset($_GET['car_id']) ? intval($_GET['car_id']) : 0;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +28,7 @@
             <h1>Rent-A-Wheel</h1>
             <nav>
                 <ul>
-                <li><a href="homepage.php">Home</a></li>
+                    <li><a href="homepage.php">Home</a></li>
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
@@ -28,6 +44,8 @@
                 <h2>Car Booking Form</h2>
                 <p>Please fill out the form below to book a car.</p>
                 <form action="submit_booking.php" method="POST">
+                    <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>">
+                    <input type="hidden" name="car_id" value="<?php echo $car_id; ?>">
                     <div class="form-group">
                         <label for="fullname">Full Name</label>
                         <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
@@ -39,16 +57,6 @@
                     <div class="form-group">
                         <label for="email">Email Address</label>
                         <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cartype">Select car type</label>
-                        <select id="cartype" name="cartype" required>
-                            <option value="">Choose car type</option>
-                            <option value="compact">Compact</option>
-                            <option value="sedan">Sedan</option>
-                            <option value="suv">SUV</option>
-                            <option value="luxury">Luxury</option>
-                        </select>
                     </div>
                     <div class="form-group">
                         <label for="pickup_date">Pickup Date</label>
@@ -78,5 +86,4 @@
         </div>
     </footer>
 </body>
-
 </html>
