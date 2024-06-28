@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ass1";
+$dbname = "rent";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -34,11 +34,14 @@ $car = $result->fetch_assoc();
 <div class="car-details">
     <img src="image/<?php echo $car['image_path']; ?>" alt="Car Image">
     <div class="car-info">
-        <h2><?php echo $car['make'] . " " . $car['model']; ?></h2>
+        <h2><?php echo $car['brand'] . " " . $car['model']; ?></h2>
         <p>Year: <?php echo $car['year']; ?></p>
         <p>Color: <?php echo $car['color']; ?></p>
+        <p>Fuel Type: <?php echo $car['fuel_type']; ?></p>
+        <p>Seats: <?php echo $car['seat_number']; ?></p>
+        <p>Capacity: <?php echo $car['capacity']; ?> L</p>
         <p>Registration: <?php echo $car['registration']; ?></p>
-        <p>Status: <?php echo $car['status']; ?></p>
+        <p>Status: <?php echo $car['status'] ? 'Available' : 'Not Available'; ?></p>
         <p>Price per Day: $<?php echo $car['price_per_day']; ?></p>
         <a href="booking.php?car_id=<?php echo $car['car_id']; ?>" class="button">Book Now</a>
     </div>

@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ass1";
+$dbname = "rent";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,9 +14,8 @@ if ($conn->connect_error) {
 }
 
 // Fetch car data from the Car table
-$sql = "SELECT car_id, make, model, year, color, registration, status, price_per_day, image_path FROM Car";
+$sql = "SELECT car_id, brand, model, year, color, fuel_type, seat_number, capacity, registration, status, price_per_day, image_path FROM Car";
 $result = $conn->query($sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -53,8 +52,8 @@ $result = $conn->query($sql);
                     while($row = $result->fetch_assoc()) {
                         echo "
                         <div class='car-card'>
-                            <img src='image/" . $row["image_path"] . "' alt='" . $row["make"] . " " . $row["model"] . "'>
-                            <h3>" . $row["make"] . " " . $row["model"] . "</h3>
+                            <img src='image/" . $row["image_path"] . "' alt='" . $row["brand"] . " " . $row["model"] . "'>
+                            <h3>" . $row["brand"] . " " . $row["model"] . "</h3>
                             <p>$" . $row["price_per_day"] . " per day</p>
                             <a href='car_details.php?car_id=" . $row["car_id"] . "' class='button'>View Details</a>
                         </div>";
