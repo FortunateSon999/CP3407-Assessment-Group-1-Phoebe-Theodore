@@ -1,9 +1,12 @@
 <?php
+// Start the session
+session_start(); 
+
 // Database connection settings
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ass1";
+$dbname = "rent";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -15,16 +18,17 @@ if ($conn->connect_error) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get form data and hash the password
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
+    $first_name = $conn->real_escape_string($_POST['first_name']);
+    $last_name = $conn->real_escape_string($_POST['last_name']);
+    $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
-    $phone = $_POST['phone'];
+    $phone = $conn->real_escape_string($_POST['phone']);
+    $age = intval($_POST['age']);
     $password_hashed = password_hash($password, PASSWORD_DEFAULT);
 
     // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO Customer (first_name, last_name, email, password, phone) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $first_name, $last_name, $email, $password_hashed, $phone);
+    $stmt = $conn->prepare("INSERT INTO Customer (first_name, last_name, email, password, phone, age) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssi", $first_name, $last_name, $email, $password_hashed, $phone, $age);
 
     // Execute the query
     if ($stmt->execute()) {
@@ -32,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: login.php");
         exit();
     } else {
-        echo "Error: " . $stmt->error;
+        $error_message = "Error: " . $stmt->error;
     }
 
     // Close connection
@@ -54,6 +58,9 @@ $conn->close();
     <div class="registration-container">
         <div class="registration-box">
             <h2>Register</h2>
+            <?php if (isset($error_message)): ?>
+                <p class="error"><?php echo $error_message; ?></p>
+            <?php endif; ?>
             <form action="register.php" method="POST">
                 <div class="form-group">
                     <label for="first_name">First Name:</label>
@@ -74,6 +81,10 @@ $conn->close();
                 <div class="form-group">
                     <label for="phone">Phone:</label>
                     <input type="text" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
                 </div>
                 <button type="submit" class="register-button">Register</button>
             </form>
