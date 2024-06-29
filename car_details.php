@@ -43,6 +43,7 @@ $car = $result->fetch_assoc();
         <p>Registration: <?php echo $car['registration']; ?></p>
         <p>Status: <?php echo $car['status'] ? 'Available' : 'Not Available'; ?></p>
         <p>Price per Day: $<?php echo $car['price_per_day']; ?></p>
+        <a href="review.php?car_id=<?php echo $car['car_id']; ?>" class="button">Review</a>
         <a href="booking.php?car_id=<?php echo $car['car_id']; ?>" class="button">Book Now</a>
     </div>
 </div>
