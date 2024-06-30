@@ -37,6 +37,7 @@ $result = $conn->query($sql);
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
                     <li><a href="login.php">Login</a></li>
+                    <li><a href="userprofile.php">Account</a></li>
                 </ul>
             </nav>
         </div>
@@ -46,6 +47,7 @@ $result = $conn->query($sql);
         <section class="cars-list">
             <div class="container">
                 <h2>Available Cars</h2>
+                <div class="car-grid">
                 <?php
                 if ($result->num_rows > 0) {
                     // Output data for each car
@@ -63,6 +65,7 @@ $result = $conn->query($sql);
                 }
                 $conn->close();
                 ?>
+                </div>
             </div>
         </section>
     </main>
@@ -74,4 +77,5 @@ $result = $conn->query($sql);
     </footer>
 </body>
 </html>
+
 
