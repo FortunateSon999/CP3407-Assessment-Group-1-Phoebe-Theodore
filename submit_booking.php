@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+// Check if customer is logged in
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
+    header("Location: login.php");
+    exit();
+}
+
+$customer_id = $_SESSION['user_id'];
+
 // Database connection settings
 $servername = "localhost";
 $username = "root";
@@ -15,49 +23,39 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $customer_id = intval($_POST['customer_id']);
-    $car_id = intval($_POST['car_id']);
-    $fullname = $conn->real_escape_string($_POST['fullname']);
-    $phone = $conn->real_escape_string($_POST['phone']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $pickup_date = $_POST['pickup_date'];
-    $pickup_time = $_POST['pickup_time'];
-    $return_date = $_POST['return_date'];
-    $return_time = $_POST['return_time'];
+// Get form data
+$car_id = $_POST['car_id'];
+$fullname = $_POST['fullname'];
+$phone = $_POST['phone'];
+$email = $_POST['email'];
+$pickup_date = $_POST['pickup_date'];
+$pickup_time = $_POST['pickup_time'];
+$return_date = $_POST['return_date'];
+$return_time = $_POST['return_time'];
+$payment_method = $_POST['payment_method'];
 
-    // Calculate rental date and return date
-    $rental_date = $pickup_date . ' ' . $pickup_time;
-    $return_date = $return_date . ' ' . $return_time;
+// Insert booking details into Rentals table
+$sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved')";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iissss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time);
 
-    // Calculate the total price
-    $car_query = $conn->prepare("SELECT price_per_day FROM Car WHERE car_id = ?");
-    $car_query->bind_param("i", $car_id);
-    $car_query->execute();
-    $car_query->bind_result($price_per_day);
-    $car_query->fetch();
-    $car_query->close();
+if ($stmt->execute()) {
+    $rental_id = $stmt->insert_id;
 
-    $datetime1 = new DateTime($pickup_date);
-    $datetime2 = new DateTime($return_date);
-    $interval = $datetime1->diff($datetime2);
-    $days = $interval->days;
-    $total_price = $days * $price_per_day;
+    // Insert payment details into Payment table
+    $sql_payment = "INSERT INTO Payment (rental_id, amount, payment_date, payment_method) VALUES (?, 0, CURDATE(), ?)";
+    $stmt_payment = $conn->prepare($sql_payment);
+    $stmt_payment->bind_param("is", $rental_id, $payment_method);
 
-    // Insert booking into Rentals table
-    $stmt = $conn->prepare("INSERT INTO Rentals (customer_id, car_id, rental_date, return_date, total_price, status) VALUES (?, ?, ?, ?, ?, 'reserved')");
-    $stmt->bind_param("iissd", $customer_id, $car_id, $pickup_date, $return_date, $total_price);
-
-    if ($stmt->execute()) {
-        echo "Booking successful.";
-        // Redirect to confirmation or payment page
-        header("Location: confirmation.php");
+    if ($stmt_payment->execute()) {
+        // Redirect to booking confirmation page with rental_id
+        header("Location: booking_confirm.php?rental_id=" . $rental_id);
         exit();
     } else {
-        echo "Error: " . $stmt->error;
+        echo "Error: " . $stmt_payment->error;
     }
-
-    $stmt->close();
+} else {
+    echo "Error: " . $stmt->error;
 }
 
 $conn->close();
