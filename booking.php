@@ -9,9 +9,23 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
 
 $customer_id = $_SESSION['user_id'];
 
-// Assuming car_id is passed as a GET parameter when navigating to this page
-$car_id = isset($_GET['car_id']) ? intval($_GET['car_id']) : 0;
+// Database connection settings
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "rent";
 
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch available cars
+$sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +47,7 @@ $car_id = isset($_GET['car_id']) ? intval($_GET['car_id']) : 0;
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
                     <li><a href="login.php">Login</a></li>
+                    <li><a href="userprofile.php">Account</a></li>
                 </ul>
             </nav>
         </div>
@@ -45,7 +60,23 @@ $car_id = isset($_GET['car_id']) ? intval($_GET['car_id']) : 0;
                 <p>Please fill out the form below to book a car.</p>
                 <form action="submit_booking.php" method="POST">
                     <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>">
-                    <input type="hidden" name="car_id" value="<?php echo $car_id; ?>">
+
+                    <div class="form-group">
+                        <label for="car_id">Select Car</label>
+                        <select id="car_id" name="car_id" required>
+                            <option value="">Select a car</option>
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    echo "<option value='" . $row['car_id'] . "'>" . $row['brand'] . " " . $row['model'] . " - $" . $row['price_per_day'] . " per day</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No cars available</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="fullname">Full Name</label>
                         <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
@@ -74,6 +105,18 @@ $car_id = isset($_GET['car_id']) ? intval($_GET['car_id']) : 0;
                         <label for="return_time">Return Time</label>
                         <input type="time" id="return_time" name="return_time" required>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="payment_method">Payment Method</label>
+                        <select id="payment_method" name="payment_method" required>
+                            <option value="">Select a payment method</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="debit_card">Debit Card</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+
                     <button type="submit">Submit Booking</button>
                 </form>
             </div>
@@ -87,3 +130,7 @@ $car_id = isset($_GET['car_id']) ? intval($_GET['car_id']) : 0;
     </footer>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>
