@@ -490,11 +490,17 @@ button[type="submit"]:hover {
     color: #000;
 }
 
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 0 20px;
+}
+
 .car-card {
-    display: inline-block;
     background: #fff;
     padding: 20px;
-    margin: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     text-align: center;
@@ -556,6 +562,7 @@ button[type="submit"]:hover {
 .car-details .button {
     margin-top: 20px;
 }
+
 /* Cars page styles */
 /* .cars-list {
     padding: 4rem 0;
@@ -777,8 +784,81 @@ footer p {
 }
 /* forgot password styles */
 
-/* bill styles */
 
-/* booking comfirm styles */
+/* booking comfirm and bill styles */
+.confirmation-container,
+.bill-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.confirmation-box,
+.bill-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.confirmation-box h2,
+.bill-box h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: var(--primary-color);
+}
+
+.confirmation-details,
+.bill-details {
+    text-align: left;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.confirmation-details p,
+.bill-details p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+button {
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: var(--color);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #0c2646;
+    transform: scale(1.02);
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: var(--color);
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+    background-color: #0c2646;
+    transform: scale(1.02);
+}
+
 
 /* my booking */
