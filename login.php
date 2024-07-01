@@ -23,46 +23,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Check in Customer table
     $stmt = $conn->prepare("SELECT customer_id, password FROM Customer WHERE email = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($user_id, $hashed_password);
-    $stmt->fetch();
-
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        // Customer login successful
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_type'] = 'customer';
-
-        // Update status to 1
-        $stmt = $conn->prepare("UPDATE Customer SET status = 1 WHERE customer_id = ?");
-        $stmt->bind_param("i", $user_id);
+    if ($stmt) {
+        $stmt->bind_param("s", $username);
         $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($customer_id, $hashed_password);
+        $stmt->fetch();
 
-        header("Location: homepage.php");
-        exit();
+        if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
+            // Customer login successful
+            $_SESSION['customer_id'] = $customer_id;
+            $_SESSION['user_type'] = 'customer';
+
+            // Update status to 1
+            $update_stmt = $conn->prepare("UPDATE Customer SET status = 1 WHERE customer_id = ?");
+            if ($update_stmt) {
+                $update_stmt->bind_param("i", $customer_id);
+                $update_stmt->execute();
+                $update_stmt->close();
+            }
+
+            header("Location: homepage.php");
+            exit();
+        }
+        $stmt->close();
     }
 
     // Check in Employee table
     $stmt = $conn->prepare("SELECT emp_id, password FROM Employee WHERE email = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($user_id, $hashed_password);
-    $stmt->fetch();
+    if ($stmt) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($emp_id, $hashed_password);
+        $stmt->fetch();
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
-        // Employee login successful
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_type'] = 'employee';
+        if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
+            // Employee login successful
+            $_SESSION['emp_id'] = $emp_id;
+            $_SESSION['user_type'] = 'employee';
 
-        header("Location: homepage.php");
-        exit();
-    } else {
-        $error_message = "Invalid username or password.";
+            header("Location: homepage.php");
+            exit();
+        } else {
+            $error_message = "Invalid username or password.";
+        }
+        $stmt->close();
     }
-
-    $stmt->close();
 }
 
 $conn->close();
@@ -97,7 +104,7 @@ $conn->close();
         <div class="login-box">
             <h2>Login</h2>
             <?php if ($error_message): ?>
-                <p class="error"><?php echo $error_message; ?></p>
+                <p class="error"><?php echo htmlspecialchars($error_message); ?></p>
             <?php endif; ?>
             <form action="login.php" method="POST">
                 <input type="text" name="username" placeholder="Username (email address)" required>
@@ -116,4 +123,3 @@ $conn->close();
     </footer>
 </body>
 </html>
-
