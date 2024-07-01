@@ -20,7 +20,7 @@ $error_message = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    
+
     // Check in Customer table
     $stmt = $conn->prepare("SELECT customer_id, password FROM Customer WHERE email = ?");
     $stmt->bind_param("s", $username);
@@ -28,15 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->store_result();
     $stmt->bind_result($user_id, $hashed_password);
     $stmt->fetch();
-    
+
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         // Customer login successful
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_type'] = 'customer';
+
+        // Update status to 1
+        $stmt = $conn->prepare("UPDATE Customer SET status = 1 WHERE customer_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+
         header("Location: homepage.php");
         exit();
     }
-    
+
     // Check in Employee table
     $stmt = $conn->prepare("SELECT emp_id, password FROM Employee WHERE email = ?");
     $stmt->bind_param("s", $username);
@@ -44,17 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->store_result();
     $stmt->bind_result($user_id, $hashed_password);
     $stmt->fetch();
-    
+
     if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
         // Employee login successful
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_type'] = 'employee';
+
         header("Location: homepage.php");
         exit();
     } else {
         $error_message = "Invalid username or password.";
     }
-    
+
     $stmt->close();
 }
 
@@ -109,3 +116,4 @@ $conn->close();
     </footer>
 </body>
 </html>
+
