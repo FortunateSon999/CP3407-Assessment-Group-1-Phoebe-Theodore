@@ -142,4 +142,3 @@ if ($result === FALSE) {
 <?php
 $conn->close();
 ?>
-

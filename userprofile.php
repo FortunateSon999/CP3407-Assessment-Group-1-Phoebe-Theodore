@@ -86,7 +86,7 @@ session_start();
                     </div>
                     <div>
                         <label for="profile_picture">Profile Picture:</label>
-                        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                        <input type="file" id="profile_picture" name="profile_picture" accept="profiles/*">
                         <?php
                         $default_image = 'image/dprofile.png'; // handle default pic
                         $profile_picture = !empty($row['profile_picture']) ? $row['profile_picture'] : $default_image;

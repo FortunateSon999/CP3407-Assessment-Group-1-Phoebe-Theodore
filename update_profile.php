@@ -28,11 +28,21 @@ $profile_picture = '';
 if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
     $file_tmp_path = $_FILES['profile_picture']['tmp_name'];
     $file_name = $_FILES['profile_picture']['name'];
-    $file_size = $_FILES['profile_picture']['size'];
-    $file_type = $_FILES['profile_picture']['type'];
     $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-    $profile_picture = 'uploads/' . uniqid() . '.' . $file_ext;
-    move_uploaded_file($file_tmp_path, $profile_picture);
+    $profile_picture = 'profiles/' . uniqid() . '.' . $file_ext;
+
+    // Validate image file
+    $check = getimagesize($file_tmp_path);
+    if ($check !== false) {
+        // Move the uploaded file
+        if (!move_uploaded_file($file_tmp_path, $profile_picture)) {
+            echo "Sorry, there was an error uploading your file.";
+            exit();
+        }
+    } else {
+        echo "File is not an image.";
+        exit();
+    }
 }
 
 // Update customer information
@@ -50,7 +60,7 @@ if ($stmt->execute()) {
     header("Location: userprofile.php");
     exit();
 } else {
-    echo "Error: " . $stmt->error;
+    echo "Error updating record: " . $stmt->error;
 }
 
 $stmt->close();

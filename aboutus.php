@@ -83,7 +83,3 @@ session_start();
     </footer>
 </body>
 </html>
-
-
-<!-- TODO -->
- <!-- 1. Add location(map) , 2. Add contac us (email address)-->
