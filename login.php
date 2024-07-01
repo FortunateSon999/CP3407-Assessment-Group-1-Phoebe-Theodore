@@ -93,8 +93,12 @@ $conn->close();
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="account_checking.php">Account</a></li>
+                    <?php if (isset($_SESSION['customer_id'])): ?>
+                        <li><a href="userprofile.php">Account</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="login.php">Login</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +20,12 @@
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="account_checking.php">Account</a></li>
+                    <?php if (isset($_SESSION['customer_id'])): ?>
+                        <li><a href="userprofile.php">Account</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="login.php">Login</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
@@ -81,7 +89,7 @@
                         <label for="profile_picture">Profile Picture:</label>
                         <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
                         <?php
-                        $default_image = 'images/dprofile.png'; // handle defalt pic
+                        $default_image = 'image/dprofile.png'; // handle defalt pic
                         $profile_picture = !empty($row['profile_picture']) ? $row['profile_picture'] : $default_image;
                         ?>
                         <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" style="max-width: 100px;">

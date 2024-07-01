@@ -2,12 +2,12 @@
 session_start();
 
 // Assuming customer_id is stored in the session after login
-if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
+if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
 
-$customer_id = $_SESSION['user_id'];
+$customer_id = $_SESSION['customer_id'];
 
 // Database connection settings
 $servername = "localhost";
@@ -26,6 +26,10 @@ if ($conn->connect_error) {
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
 $result = $conn->query($sql);
+
+if ($result === FALSE) {
+    echo "Error: " . $conn->error;
+}
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +50,12 @@ $result = $conn->query($sql);
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="account_checking.php">Account</a></li>
+                    <?php if (isset($_SESSION['customer_id'])): ?>
+                        <li><a href="userprofile.php">Account</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="login.php">Login</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
@@ -134,3 +142,4 @@ $result = $conn->query($sql);
 <?php
 $conn->close();
 ?>
+
