@@ -36,7 +36,6 @@ session_start();
             <div class="container">
                 <h2>User Profile</h2>
                 <?php
-                session_start();
                 if (!isset($_SESSION['customer_id'])) {
                     header("Location: login.php");
                     exit();
@@ -89,7 +88,7 @@ session_start();
                         <label for="profile_picture">Profile Picture:</label>
                         <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
                         <?php
-                        $default_image = 'image/dprofile.png'; // handle defalt pic
+                        $default_image = 'image/dprofile.png'; // handle default pic
                         $profile_picture = !empty($row['profile_picture']) ? $row['profile_picture'] : $default_image;
                         ?>
                         <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" style="max-width: 100px;">
