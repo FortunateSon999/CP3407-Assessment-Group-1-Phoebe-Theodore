@@ -563,56 +563,79 @@ button[type="submit"]:hover {
     margin-top: 20px;
 }
 
-/* Cars page styles */
-/* .cars-list {
-    padding: 4rem 0;
-    background: #f8f8f8;
-    color: #333;
-}
-
-.cars-list .container {
-    text-align: center;
-}
-
-.cars-list h2 {
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-    color: #000;
-}
-
-.car-card {
-    display: inline-block;
+/* User profile styles */
+.profile .container {
+    max-width: 800px;
     background: #fff;
-    padding: 20px;
-    margin: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
     border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile h2 {
     text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 30px;
+    color: #0d47a1;
+    font-weight: 700;
 }
 
-.car-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.profile form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.car-card img {
-    width: 100%;
-    height: auto;
-    max-width: 300px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+.profile form div {
+    display: flex;
+    flex-direction: column;
 }
 
-.car-card h3 {
-    margin: 10px 0;
-    font-size: 1.5rem;
-}
-
-.car-card p {
-    font-size: 1.1rem;
+.profile form label {
+    margin-bottom: 5px;
+    font-weight: 500;
     color: #666;
-} */
+}
+
+.profile form input[type="text"],
+.profile form input[type="email"],
+.profile form input[type="number"],
+.profile form input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.profile form input[type="file"] {
+    padding: 5px;
+}
+
+.profile img {
+    margin-top: 10px;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 2px solid #0d47a1;
+}
+
+.profile button {
+    grid-column: span 2;
+    padding: 15px;
+    border: none;
+    background: #0d47a1;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: background 0.3s;
+}
+
+.profile button:hover {
+    background: #0c2646;
+}
+
 
 
 /* Footer styles */
