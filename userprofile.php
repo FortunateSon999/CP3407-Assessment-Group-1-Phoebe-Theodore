@@ -95,6 +95,9 @@ session_start();
                     </div>
                     <button type="submit">Update Profile</button>
                 </form>
+                <div class="my-booking">
+                    <a href="mybooking.php">My Booking</a>
+                </div>
                 <?php
                 } else {
                     echo "<p>User not found.</p>";

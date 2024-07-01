@@ -636,6 +636,27 @@ button[type="submit"]:hover {
     background: #0c2646;
 }
 
+.profile .my-booking {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile .my-booking a {
+    color: #0d47a1;
+    text-decoration: none;
+    font-weight: bold;
+    border: 2px solid #0d47a1;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.profile .my-booking a:hover {
+    background: #0d47a1;
+    color: white;
+}
+
 
 
 /* Footer styles */
