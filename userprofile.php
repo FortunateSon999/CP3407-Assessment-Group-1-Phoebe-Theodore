@@ -38,7 +38,7 @@
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
-                $dbname = "rent_a_wheel";
+                $dbname = "rent";
 
                 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -80,9 +80,11 @@
                     <div>
                         <label for="profile_picture">Profile Picture:</label>
                         <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
-                        <?php if (!empty($row['profile_picture'])): ?>
-                            <img src="<?php echo $row['profile_picture']; ?>" alt="Profile Picture" style="max-width: 100px;">
-                        <?php endif; ?>
+                        <?php
+                        $default_image = 'images/dprofile.png'; // handle defalt pic
+                        $profile_picture = !empty($row['profile_picture']) ? $row['profile_picture'] : $default_image;
+                        ?>
+                        <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" style="max-width: 100px;">
                     </div>
                     <button type="submit">Update Profile</button>
                 </form>
