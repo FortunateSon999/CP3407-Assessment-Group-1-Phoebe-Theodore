@@ -34,7 +34,7 @@ $result = $conn->query($sql);
             <h1>Rent-A-Wheel</h1>
             <nav>
                 <ul>
-                    <li><a href="homepage.php">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
