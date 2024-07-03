@@ -25,11 +25,17 @@ $phone = $_POST['phone'];
 $age = $_POST['age'];
 $profile_picture = '';
 
+// Ensure the profiles directory exists
+$profiles_dir = 'profiles';
+if (!is_dir($profiles_dir)) {
+    mkdir($profiles_dir, 0777, true);
+}
+
 if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
     $file_tmp_path = $_FILES['profile_picture']['tmp_name'];
     $file_name = $_FILES['profile_picture']['name'];
     $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-    $profile_picture = 'profiles/' . uniqid() . '.' . $file_ext;
+    $profile_picture = $profiles_dir . '/' . uniqid() . '.' . $file_ext;
 
     // Validate image file
     $check = getimagesize($file_tmp_path);
@@ -66,3 +72,4 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 ?>
+
