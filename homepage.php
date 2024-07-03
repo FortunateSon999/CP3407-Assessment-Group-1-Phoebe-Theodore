@@ -60,7 +60,6 @@ $conn->close();
             <div class="container">
                 <h1>Welcome to Rent-A-Wheel</h1>
                 <p>Find the perfect car for your journey</p>
-                <!-- <button>Book Now</button> -->
                 <a href="booking.php" class="button">Book Now</a>
             </div>
         </section>
@@ -76,20 +75,14 @@ $conn->close();
         <section class="featured-cars">
             <div class="container">
                 <h2>Featured Car Rentals</h2>
-                <div class="car-card">
-                    <img src="image/carousel-1.png" alt="Car 1">
-                    <h3>Car Model 1</h3>
-                    <p>$50 per day</p>
-                </div>
-                <div class="car-card">
-                    <img src="image/carousel-2.png" alt="Car 2">
-                    <h3>Car Model 2</h3>
-                    <p>$60 per day</p>
-                </div>
-                <div class="car-card">
-                    <img src="image/pngegg.png" alt="Car 3">
-                    <h3>Car Model 3</h3>
-                    <p>$70 per day</p>
+                <div class="car-carousel">
+                    <?php foreach ($cars as $car): ?>
+                    <div class="car-card">
+                        <img src="image/<?php echo htmlspecialchars($car['image_path']); ?>" alt="<?php echo htmlspecialchars($car['brand'] . ' ' . $car['model']); ?>">
+                        <h3><?php echo htmlspecialchars($car['brand'] . ' ' . $car['model']); ?></h3>
+                        <p>$<?php echo htmlspecialchars($car['price_per_day']); ?> per day</p>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
