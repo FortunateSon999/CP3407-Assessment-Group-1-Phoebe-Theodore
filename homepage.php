@@ -1,5 +1,29 @@
 <?php
 session_start();
+
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "rent";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT * FROM Car LIMIT 5"; // Adjust the query as needed
+$result = $conn->query($sql);
+
+$cars = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $cars[] = $row;
+    }
+}
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
