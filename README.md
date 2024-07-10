@@ -15,9 +15,9 @@ The following is the list of items, which are required to be completed.
 ## Team
 
 It is recommended to complete this assignment in a group of maximum 3 students.
-1. Student 1
-2. Student name 2
-3. Name 3
+1. Chung Sheng Ni Phoebe
+2. Theodore Lee Qi
+
 
 
 # *General* project planning BEFORE iteration-1, (see chapters 1 and 2)
@@ -27,28 +27,49 @@ Checklist:
 2. User stories are correct: see p39
 3. Must have more user stories than fits into iterations 1 and 2. To practice the priority.
 
-### Iteration 1 [4-5 weeks], add your start and end dates 
+### Iteration 1 [27/6/24 - 14/7/24], add your start and end dates 
 
+1. Homepage Interface (Priority: 10, Effort Estimate: 1 day)
+
+2. About Us Interface (Priority: 30, Effort Estimate: 1 day)
+
+3. Booking Interface (Priority: 10, Effort Estimate: 3 days)
+
+4. Login Interface (Priority: 20, Effort Estimate: 2 days)
+
+5. Database Design (Priority: 10, Effort Estimate: 2 days)
+
+6. Car Interface (Priority: 20, Effort Estimate: 4 days)
+
+7. Car informaation pop-up interface (Priority: 20, Effort Estimate: 2 days)
+
+8. Customer Registration Interface (Priority: 10, Effort Estimate: 2 days)
+    
+9. Login and Logout Functionality (Priority: 20, Effort Estimate: 2 days)
+    
+10. Booking system (Priority: 10, Effort Estimate: 5 days)
+
+11. Bill interface (Priority: 30, Effort Estimate: 2 days)
+
+12. Review System (Priority: 20, Effort Estimate: 10 days)
+   
+
+Total: 36 days
+
+
+### Iteration 2 [15/7/24 - 31/7/24], add your start and end dates
 1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
 2. ...
 
-Total: YY days
+Total: 34 days
 
 
-### Iteration 2 [4-5 weeks], add your start and end dates
+### Iteration 2 [1/8/24 - 11/8/24], add your start and end dates
 1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
 2. ...
 
-Total: YY days
+Total: 22 days
 
-### Not enough time/developers: 
-1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
-
-Total: YY days
-
-# Actual iterations
-1. [Iteration-1](./iteration_1.md)
-2. [Iteration-2](./iteration_2.md)
+Total effort time: 92 days
 
 
