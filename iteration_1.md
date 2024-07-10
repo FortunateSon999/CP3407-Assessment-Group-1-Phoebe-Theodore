@@ -1,9 +1,9 @@
 ## Iteration 1: Core Functionality and Basic Operations
 
 Objective:
-            - Develop essential interfaces and their designs
-            - Implement core functionalities such as booking, login, registration, and car information
-            - Ensure the system is interconnected and functions as intended
+     - Develop essential interfaces and their designs
+     - Implement core functionalities such as booking, login, registration, and car information
+     - Ensure the system is interconnected and functions as intended
 
 
 
@@ -44,7 +44,7 @@ Objective:
     - Implement Login Functionality (combine with task 4)
     - Implement Logout Functionality
 
-10. Booking system (Priority: 10, Effort Estimate: 5 days)
+10. Booking system (Priority: 10, Effort Estimate: 3 days)
     - Create Booking Interface (combine with task 3)
     - Implement Function for Booking (combine with task 3)
     - Add Function to Check Customer Login/Register
@@ -61,6 +61,8 @@ Objective:
     - Add Function to Review Comment and Rating
     - Add Design of Review Interface
     
-    
+13. User Account Management (Priority: 20, Effort Estimate: 2 days)
+    - Create User Account Interface for Customers to Edit Their Profile
+    - Implement Function to Change/Update Database
 
 Total Effort Estimate: 36 days

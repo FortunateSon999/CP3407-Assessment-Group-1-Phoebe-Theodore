@@ -1,29 +1,51 @@
-# Actual iteration-2 board, (see chapters 3 and 4), add your start and end dates 
+## Iteration 1: Enhanced Functionality and User Experience
 
-Checklist: 
-1. github entry timestamps
-2. User stories are correct: see p39
+Objective:
+     - Improve existing features based on user feedback
+     - Add new functionalities for better user experience
+     - Introduce administrative and employee management capabilities
 
-* Assumed Velocity FROM iteration-1: ?? 
-* Number of developers: ??
-* Total estimated amount of work: YY days
 
-User stories or tasks (see chapter 4):
-1. [user story or task title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
 
-In progress:
-* Task-2 (developer name or initials), date started
-* ...
+1. Homepage Enhancements (Priority: 30, Effort Estimate: 1 day)
+    - Update Homepage Design with Featured Cars and Discounts
+    - Add More Features to Homepage
 
-Completed:
-* Task-3 (developer name or initials), date completed
-* ...
+2. User Profile Funtionality (Priority: 30, Effort Estimate: 1 day)
+    - Fix image upload functionality
 
-### Burn Down for iteration-2 (see chapter 4):
-Update this at least once per week
-* 4 weeks left, xx days of estimated amount of work 
-* 2 weeks left, xx days
-* 1 weeks left, xx days
-* 0 weeks left, xx days
-* Actual Velocity: ?? 
+3. Booking system update (Priority: 10, Effort Estimate: 2 days)
+    - Add function to detect if the car is reserved
+    - Update bill to calculate the total price
+
+4. Password management (Priority: 30, Effort Estimate: 2 days)
+    - Create 'Forgot Password' Interface
+    - Design 'Forgot Password' Interface
+    - Implement 'Forgot Password' Functionality
+
+5. Employee Login (Priority: 30, Effort Estimate: 1 day)
+    - Update Login for Employee Accounts
+
+6. Manage Rentals Interface (Priority: 50, Effort Estimate: 3 days)
+    - Create manage rentals interface
+    - Create interface for employee to manage rental and car status
+
+7. Car Management Interface (Priority: 50, Effort Estimate: 3 days)
+    - Create Interface for adding and updating car information
+    - Design and implement adding/updating car info
+
+8. Employee Management Interface (Priority: 50, Effort Estimate: 3 days)
+    - Create interface for admin and manager to manage the employees
+    - Implement the employee management functionality
+
+9. AI Chatbot and Live Chat (Priority: 40, Effort Estimate: 10 days)
+    - Create AI Chatbot and Live chat interface
+    - Implement API for AI Chatbot
+    - Implement  API Live Chat
+
+10. Payment Gatway Integration (Priority: 10, Effort Estimate: 8 days)
+    - Implement API for Payment Gateway
+    - Update the booking system
+
+
+Total Effort Estimate: 34 days

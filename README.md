@@ -15,8 +15,8 @@ The following is the list of items, which are required to be completed.
 ## Team
 
 It is recommended to complete this assignment in a group of maximum 3 students.
-1. Chung Sheng Ni Phoebe
-2. Theodore Lee Qi
+1. Chung Sheng Ni Phoebe [14351028]
+2. Theodore Lee Qi [14341943] 
 
 
 
@@ -27,7 +27,7 @@ Checklist:
 2. User stories are correct: see p39
 3. Must have more user stories than fits into iterations 1 and 2. To practice the priority.
 
-### Iteration 1 [27/6/24 - 14/7/24], add your start and end dates 
+### Iteration 1 [27/6/24 - 14/7/24]
 
 1. Homepage Interface (Priority: 10, Effort Estimate: 1 day)
 
@@ -47,26 +47,44 @@ Checklist:
     
 9. Login and Logout Functionality (Priority: 20, Effort Estimate: 2 days)
     
-10. Booking system (Priority: 10, Effort Estimate: 5 days)
+10. Booking system (Priority: 10, Effort Estimate: 3 days)
 
 11. Bill interface (Priority: 30, Effort Estimate: 2 days)
 
 12. Review System (Priority: 20, Effort Estimate: 10 days)
+
+13. User Account Management (Priority: 20, Effort Estimate: 2 days)
    
 
 Total: 36 days
 
 
-### Iteration 2 [15/7/24 - 31/7/24], add your start and end dates
-1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
+### Iteration 2 [15/7/24 - 31/7/24]
+1. Homepage Enhancements (Priority: 30, Effort Estimate: 1 day)
+   
+2. User Profile Funtionality (Priority: 30, Effort Estimate: 1 day)
+    
+3. Booking system update (Priority: 10, Effort Estimate: 2 days)
+
+4. Password management (Priority: 30, Effort Estimate: 2 days)
+
+5. Employee Login (Priority: 30, Effort Estimate: 1 day)
+    
+6. Manage Rentals Interface (Priority: 50, Effort Estimate: 3 days)
+ 
+7. Car Management Interface (Priority: 50, Effort Estimate: 3 days)
+   
+8. Employee Management Interface (Priority: 50, Effort Estimate: 3 days)
+
+9. AI Chatbot and Live Chat (Priority: 40, Effort Estimate: 10 days)
+
+10. Payment Gatway Integration (Priority: 10, Effort Estimate: 8 days)
+
 
 Total: 34 days
 
 
-### Iteration 2 [1/8/24 - 11/8/24], add your start and end dates
-1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
+### Iteration 2 [1/8/24 - 11/8/24]
 
 Total: 22 days
 
