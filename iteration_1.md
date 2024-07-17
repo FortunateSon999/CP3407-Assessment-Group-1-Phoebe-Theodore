@@ -67,5 +67,5 @@ Objective:
 
 Total Effort Estimate: 36 days
 
-![Burn Down Graph](./ass1/CP3407-Assessment-Group-1-Phoebe-Theodore/brundownG/brundowng(1).drawio.png)
+![Burn Down Graph](./CP3407-Assessment-Group-1-Phoebe-Theodore/brundownG/brundowng(1).drawio.png)
 
