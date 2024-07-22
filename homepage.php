@@ -13,6 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Fetch cars
 $sql = "SELECT * FROM Car LIMIT 5"; // Adjust the query as needed
 $result = $conn->query($sql);
 
@@ -20,6 +21,17 @@ $cars = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $cars[] = $row;
+    }
+}
+
+// Fetch discounts
+$sql = "SELECT * FROM Discount"; // Adjust the query as needed
+$result = $conn->query($sql);
+
+$discounts = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $discounts[] = $row;
     }
 }
 
@@ -87,6 +99,22 @@ $conn->close();
             </div>
         </section>
 
+        <section class="discount">
+            <div class="container">
+                <h2>Seasons Discount!!!</h2>
+                <div class="discount-carousel">
+                    <?php foreach ($discounts as $discount): ?>
+                    <div class="discount-card">
+                        <img src="discounts/<?php echo htmlspecialchars($discount['image_path']); ?>" alt="<?php echo htmlspecialchars($discount['discount_code']); ?>">
+                        <h3><?php echo htmlspecialchars($discount['discount_code']); ?></h3>
+                        <p><?php echo htmlspecialchars($discount['description']); ?></p>
+                        <p><?php echo htmlspecialchars($discount['discount_percent']); ?>% off</p>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+
         <section class="testimonials">
             <div class="container">
                 <h2>Testimonials</h2>
@@ -102,7 +130,6 @@ $conn->close();
         </section>
     </main>
 
-    
     <footer>
         <div class="container">
             <p>&copy; 2024 Rent-A-Wheel. All rights reserved.</p>
