@@ -1,5 +1,6 @@
 <?php
 session_start();
+// include "update_profile.php";
 ?>
 
 <!DOCTYPE html>
@@ -36,10 +37,12 @@ session_start();
             <div class="container">
                 <h2>User Profile</h2>
                 <?php
+                // include "update_profile.php";
                 if (!isset($_SESSION['customer_id'])) {
                     header("Location: login.php");
                     exit();
                 }
+                
 
                 // Database connection
                 $servername = "localhost";
@@ -63,37 +66,51 @@ session_start();
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
                 ?>
+                <!-- Display success or error messages -->
+                <?php if(isset($_GET['error'])){ ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                </div>
+                <?php } ?>
+                <?php if(isset($_GET['success'])){ ?>
+                <div class="alert alert-success" role="alert">
+                    <?php echo htmlspecialchars($_GET['success']); ?>
+                </div>
+                <?php } ?>
+
                 <form action="update_profile.php" method="POST" enctype="multipart/form-data">
                     <div>
                         <label for="first_name">First Name:</label>
-                        <input type="text" id="first_name" name="first_name" value="<?php echo $row['first_name']; ?>" required>
+                        <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($row['first_name']); ?>" required>
                     </div>
                     <div>
                         <label for="last_name">Last Name:</label>
-                        <input type="text" id="last_name" name="last_name" value="<?php echo $row['last_name']; ?>" required>
+                        <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($row['last_name']); ?>" required>
                     </div>
                     <div>
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="<?php echo $row['email']; ?>" required>
+                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($row['email']); ?>" required>
                     </div>
                     <div>
                         <label for="phone">Phone:</label>
-                        <input type="text" id="phone" name="phone" value="<?php echo $row['phone']; ?>" required>
+                        <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($row['phone']); ?>" required>
                     </div>
                     <div>
                         <label for="age">Age:</label>
-                        <input type="number" id="age" name="age" value="<?php echo $row['age']; ?>" required>
+                        <input type="number" id="age" name="age" value="<?php echo htmlspecialchars($row['age']); ?>" required>
                     </div>
                     <div>
                         <label for="profile_picture">Profile Picture:</label>
-                        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                        <input type="file" id="profile_picture" name="profile_picture" accept="profiles/*">
                         <?php
-                        $default_image = 'image/dprofile.png'; // handle default pic
+                        $default_image = 'profiles/default.png'; // handle default pic
                         $profile_picture = !empty($row['profile_picture']) ? $row['profile_picture'] : $default_image;
                         ?>
                         <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" style="max-width: 100px;">
+                        <input type="hidden" name="old_profile_picture" value="<?php echo htmlspecialchars($row['profile_picture']); ?>">
                     </div>
-                    <button type="submit">Update Profile</button>
+                    <!-- <button type="submit">Update Profile</button> -->
+                    <button type="submit" name="update_profile">Update Profile</button>
                 </form>
                 <div class="my-booking">
                     <a href="mybooking.php">My Booking</a>
