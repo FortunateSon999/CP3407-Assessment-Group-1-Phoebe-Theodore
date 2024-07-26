@@ -18,7 +18,7 @@ function displayMessage(message, sender) {
 }
 
 function getBotResponse(message) {
-    fetch('chatbot.php', {
+    fetch('chatbot_response.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
