@@ -1,19 +1,13 @@
 <?php
 session_start();
+include 'db_connection.php';
+
 if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $customer_id = $_SESSION['customer_id'];
 

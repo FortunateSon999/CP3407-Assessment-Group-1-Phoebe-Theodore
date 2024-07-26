@@ -1,18 +1,8 @@
 <?php
 session_start();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
+include 'db_connection.php';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 if (isset($_SESSION['customer_id']) && $_SESSION['user_type'] === 'customer') {
     $customer_id = $_SESSION['customer_id'];

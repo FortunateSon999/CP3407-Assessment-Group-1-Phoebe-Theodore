@@ -192,38 +192,27 @@ header nav ul li a:hover {
     color: #000;
 }
 
-.car-card {
-    display: inline-block;
-    background: #fff;
-    padding: 20px;
-    margin: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.car-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.car-card img {
-    width: 100%;
-    height: auto;
-    max-width: 300px;
+.car-carousel .car-card {
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    margin-bottom: 15px;
+    text-align: center;
+    margin: 10px;
 }
 
-.car-card h3 {
-    margin: 10px 0;
-    font-size: 1.5rem;
+.car-carousel .car-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
 }
 
-.car-card p {
-    font-size: 1.1rem;
-    color: #666;
+.car-carousel .car-card h3 {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+.car-carousel .car-card p {
+    color: #555;
 }
 
 /* Testimonials section styles */
@@ -364,7 +353,7 @@ main {
 .form-group select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #050505;
     border-radius: 5px;
     font-size: 1em;
 }
@@ -903,6 +892,8 @@ button:hover {
     background-color: #0c2646;
     transform: scale(1.02);
 }
+
+/* Review style */
 
 
 /* my booking */

@@ -37,24 +37,13 @@ session_start();
             <div class="container">
                 <h2>User Profile</h2>
                 <?php
+                include 'db_connection.php';
                 // include "update_profile.php";
                 if (!isset($_SESSION['customer_id'])) {
                     header("Location: login.php");
                     exit();
                 }
                 
-
-                // Database connection
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "rent";
-
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
 
                 $customer_id = $_SESSION['customer_id'];
                 $sql = "SELECT * FROM Customer WHERE customer_id = ?";

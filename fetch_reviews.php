@@ -2,11 +2,7 @@
 
 header('Content-Type: application/json'); // Ensure the content type is JSON
 
-// Database connection settings
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
+include 'db_connection.php';
 
 // Create connection
 try {

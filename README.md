@@ -89,5 +89,3 @@ Total: 34 days
 Total: 22 days
 
 Total effort time: 92 days
-
-

@@ -1,19 +1,7 @@
 <?php
 session_start();
 
-// Database connection settings
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'db_connection.php';
 
 // Get rental ID from URL parameters
 $rental_id = isset($_GET['rental_id']) ? intval($_GET['rental_id']) : 0;

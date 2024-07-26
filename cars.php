@@ -1,19 +1,7 @@
 <?php
 session_start();
 
-// Database connection settings
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'db_connection.php';
 
 // Fetch car data from the Car table
 $sql = "SELECT car_id, brand, model, year, color, fuel_type, seat_number, capacity, registration, status, price_per_day, image_path FROM Car";

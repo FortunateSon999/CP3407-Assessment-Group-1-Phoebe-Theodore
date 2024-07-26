@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include 'db_connection.php';
+
 // Check if customer is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
     header("Location: login.php");
@@ -9,19 +11,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
 
 $customer_id = $_SESSION['user_id'];
 
-// Database connection settings
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Get form data
 $car_id = $_POST['car_id'];

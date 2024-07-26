@@ -1,27 +1,14 @@
 <?php
 session_start();
 
+include 'db_connection.php';
+
 // Assuming customer_id is stored in the session after login
 if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
 
-$customer_id = $_SESSION['customer_id'];
-
-// Database connection settings
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "rent";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
