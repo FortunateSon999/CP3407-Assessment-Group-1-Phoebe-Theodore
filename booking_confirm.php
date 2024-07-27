@@ -11,11 +11,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
 
 $customer_id = $_SESSION['user_id'];
 
-
 // Get rental_id from query parameter
 $rental_id = isset($_GET['rental_id']) ? intval($_GET['rental_id']) : 0;
 
-// Fetch booking details from Rentals table
+// Fetch booking details from Rentals and Car tables
 $sql = "SELECT Rentals.*, Car.brand, Car.model, Car.price_per_day FROM Rentals JOIN Car ON Rentals.car_id = Car.car_id WHERE Rentals.rental_id = ? AND Rentals.customer_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $rental_id, $customer_id);
@@ -26,6 +25,20 @@ if ($result->num_rows > 0) {
     $booking = $result->fetch_assoc();
 } else {
     echo "Booking not found.";
+    exit();
+}
+
+// Fetch customer details
+$sql_customer = "SELECT first_name, last_name, phone, email FROM Customer WHERE customer_id = ?";
+$stmt_customer = $conn->prepare($sql_customer);
+$stmt_customer->bind_param("i", $customer_id);
+$stmt_customer->execute();
+$result_customer = $stmt_customer->get_result();
+
+if ($result_customer->num_rows > 0) {
+    $customer = $result_customer->fetch_assoc();
+} else {
+    echo "Customer not found.";
     exit();
 }
 
@@ -59,6 +72,9 @@ $conn->close();
                 <h2>Booking Confirmation</h2>
                 <p>Thank you for your booking. Here are your booking details:</p>
                 <ul>
+                    <li><strong>Name:</strong> <?php echo $customer['first_name'] . " " . $customer['last_name']; ?></li>
+                    <li><strong>Contact No:</strong> <?php echo $customer['phone']; ?></li>
+                    <li><strong>Email:</strong> <?php echo $customer['email']; ?></li>
                     <li><strong>Car:</strong> <?php echo $booking['brand'] . " " . $booking['model']; ?></li>
                     <li><strong>Pickup Date:</strong> <?php echo $booking['rental_date']; ?></li>
                     <li><strong>Pickup Time:</strong> <?php echo $booking['pickup_time']; ?></li>
@@ -66,6 +82,8 @@ $conn->close();
                     <li><strong>Return Time:</strong> <?php echo $booking['return_time']; ?></li>
                     <li><strong>Total Price:</strong> $<?php echo $booking['total_price']; ?></li>
                     <li><strong>Status:</strong> <?php echo $booking['status']; ?></li>
+                    <li><strong>Booking Date:</strong> <?php echo date("Y-m-d"); ?></li>
+                    <li><strong>Due of Payment:</strong> <?php echo $booking['return_date']; ?></li>
                 </ul>
                 <a href="bill.php?rental_id=<?php echo $booking['rental_id']; ?>" class="button">View & Print Bill</a>
             </div>
