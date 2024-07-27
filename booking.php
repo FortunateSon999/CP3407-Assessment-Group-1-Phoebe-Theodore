@@ -38,7 +38,7 @@ if ($result === FALSE) {
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
                     <?php if (isset($_SESSION['customer_id'])): ?>
-                        <li><a href="userprofile.php">Account</a></li>
+                        <li><a href="profile.php">Account</a></li>
                         <li><a href="logout.php">Logout</a></li>
                     <?php else: ?>
                         <li><a href="login.php">Login</a></li>

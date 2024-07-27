@@ -39,6 +39,7 @@ session_start();
                 <?php
                 include 'db_connection.php';
                 // include "update_profile.php";
+                
                 if (!isset($_SESSION['customer_id'])) {
                     header("Location: login.php");
                     exit();
