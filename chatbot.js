@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+    displayMenu();
+});
+
 function sendMessage() {
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();
@@ -32,4 +36,15 @@ function getBotResponse(message) {
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+function displayMenu() {
+    const menuOptions = [
+        '1. Check account balance',
+        '2. Transfer money',
+        '3. Pay bills',
+        '4. Contact support'
+    ];
+    const menuMessage = 'Here are some things you can ask me:\n' + menuOptions.join('\n');
+    displayMessage(menuMessage, 'bot');
 }
