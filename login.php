@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['emp_id'] = $emp_id;
             $_SESSION['user_type'] = 'employee';
 
-            header("Location: homepage.php");
+            header("Location: employee_page.php");
             exit();
         } else {
             $error_message = "Invalid username or password.";
@@ -115,3 +115,4 @@ $conn->close();
     </footer>
 </body>
 </html>
+
