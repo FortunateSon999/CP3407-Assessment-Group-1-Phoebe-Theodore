@@ -26,6 +26,7 @@ $result = $conn->query($sql);
                     <li><a href="cars.php">Cars</a></li>
                     <li><a href="booking.php">Booking</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
+                    <li><a href="chatbot.php">Chatbot</a></li>
                     <?php if (isset($_SESSION['customer_id'])): ?>
                         <li><a href="userprofile.php">Account</a></li>
                         <li><a href="logout.php">Logout</a></li>

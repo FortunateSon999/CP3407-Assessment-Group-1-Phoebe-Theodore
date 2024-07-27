@@ -4,7 +4,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "database";
+$dbname = "rent"; // REMINDER: Need to change db name according to local db name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
