@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'customer') {
 
 $customer_id = $_SESSION['user_id'];
 
-
 // Get form data
 $car_id = $_POST['car_id'];
 $fullname = $_POST['fullname'];
@@ -37,6 +36,12 @@ if ($stmt->execute()) {
     $stmt_payment->bind_param("is", $rental_id, $payment_method);
 
     if ($stmt_payment->execute()) {
+        // Update the car status to indicate it is booked (false or 0)
+        $sql_update_car_status = "UPDATE Car SET status = 0 WHERE car_id = ?";
+        $stmt_update_car_status = $conn->prepare($sql_update_car_status);
+        $stmt_update_car_status->bind_param("i", $car_id);
+        $stmt_update_car_status->execute();
+
         // Redirect to booking confirmation page with rental_id
         header("Location: booking_confirm.php?rental_id=" . $rental_id);
         exit();
