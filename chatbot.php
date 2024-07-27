@@ -51,6 +51,6 @@ session_start();
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
 </body>
 </html>
