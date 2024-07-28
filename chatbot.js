@@ -40,10 +40,10 @@ function getBotResponse(message) {
 
 function displayMenu() {
     const menuOptions = [
-        '1. Check account balance',
-        '2. Transfer money',
-        '3. Pay bills',
-        '4. Contact support'
+        '1. Check account balance\n',
+        '2. Transfer money\n',
+        '3. Pay bills\n',
+        '4. Contact support\n'
     ];
     const menuMessage = 'Here are some things you can ask me:\n' + menuOptions.join('\n');
     displayMessage(menuMessage, 'bot');
