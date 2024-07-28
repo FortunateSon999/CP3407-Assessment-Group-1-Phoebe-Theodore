@@ -42,6 +42,13 @@ if ($result_customer->num_rows > 0) {
     exit();
 }
 
+// Calculate total price
+$pickup_date = new DateTime($booking['rental_date']);
+$return_date = new DateTime($booking['return_date']);
+$interval = $pickup_date->diff($return_date);
+$days_rented = $interval->days;
+$total_price = $days_rented * $booking['price_per_day'];
+
 $conn->close();
 ?>
 
@@ -80,12 +87,12 @@ $conn->close();
                     <li><strong>Pickup Time:</strong> <?php echo $booking['pickup_time']; ?></li>
                     <li><strong>Return Date:</strong> <?php echo $booking['return_date']; ?></li>
                     <li><strong>Return Time:</strong> <?php echo $booking['return_time']; ?></li>
-                    <li><strong>Total Price:</strong> $<?php echo $booking['total_price']; ?></li>
+                    <li><strong>Total Price:</strong> $<?php echo $total_price; ?></li>
                     <li><strong>Status:</strong> <?php echo $booking['status']; ?></li>
                     <li><strong>Booking Date:</strong> <?php echo date("Y-m-d"); ?></li>
                     <li><strong>Due of Payment:</strong> <?php echo $booking['return_date']; ?></li>
                 </ul>
-                <a href="bill.php?rental_id=<?php echo $booking['rental_id']; ?>" class="button">View & Print Bill</a>
+                <button onclick="window.print()">Print Bill</button>
             </div>
         </section>
     </main>
@@ -97,3 +104,4 @@ $conn->close();
     </footer>
 </body>
 </html>
+
