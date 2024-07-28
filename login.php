@@ -104,7 +104,7 @@ $conn->close();
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
-            <a href="forgot_password.php">Forgot Password?</a>
+            <a href="forgot-password.php">Forgot Password?</a>
             <a href="register.php">Don't have an account? Register</a>
         </div>
     </div>
