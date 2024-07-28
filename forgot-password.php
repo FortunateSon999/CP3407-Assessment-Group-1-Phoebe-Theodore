@@ -5,11 +5,11 @@ $errors = array();
 
 if (isset($_POST['check-email'])) {
     $email = mysqli_real_escape_string($con, $_POST['email']);
-    $check_email = "SELECT * FROM usertable WHERE email='$email'";
+    $check_email = "SELECT * FROM Customer WHERE email='$email'";
     $run_sql = mysqli_query($con, $check_email);
     if (mysqli_num_rows($run_sql) > 0) {
         $code = rand(999999, 111111);
-        $insert_code = "UPDATE usertable SET code = $code WHERE email = '$email'";
+        $insert_code = "UPDATE Customer SET status = $code WHERE email = '$email'";
         $run_query =  mysqli_query($con, $insert_code);
         if ($run_query) {
             $subject = "Password Reset Code";
@@ -52,3 +52,4 @@ if (isset($_POST['check-email'])) {
     ?>
 </body>
 </html>
+
