@@ -143,6 +143,13 @@ if ($result === FALSE) {
                 creditCardDetails.style.display = 'none';
             }
         }
+
+        // Add event listener to call toggleCreditCardDetails on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            var paymentMethodDropdown = document.getElementById('payment_method');
+            paymentMethodDropdown.addEventListener('change', toggleCreditCardDetails);
+        });
+
     </script>
 
     <footer>
