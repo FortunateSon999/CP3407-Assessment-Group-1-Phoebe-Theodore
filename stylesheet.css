@@ -552,101 +552,6 @@ button[type="submit"]:hover {
     margin-top: 20px;
 }
 
-/* User profile styles */
-.profile .container {
-    max-width: 800px;
-    background: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.profile h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #0d47a1;
-    font-weight: 700;
-}
-
-.profile form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.profile form div {
-    display: flex;
-    flex-direction: column;
-}
-
-.profile form label {
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #666;
-}
-
-.profile form input[type="text"],
-.profile form input[type="email"],
-.profile form input[type="number"],
-.profile form input[type="file"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.profile form input[type="file"] {
-    padding: 5px;
-}
-
-.profile img {
-    margin-top: 10px;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 2px solid #0d47a1;
-}
-
-.profile button {
-    grid-column: span 2;
-    padding: 15px;
-    border: none;
-    background: #0d47a1;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: 700;
-    transition: background 0.3s;
-}
-
-.profile button:hover {
-    background: #0c2646;
-}
-
-.profile .my-booking {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-}
-
-.profile .my-booking a {
-    color: #0d47a1;
-    text-decoration: none;
-    font-weight: bold;
-    border: 2px solid #0d47a1;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background 0.3s, color 0.3s;
-}
-
-.profile .my-booking a:hover {
-    background: #0d47a1;
-    color: white;
-}
-
-
 
 /* Footer styles */
 footer {
@@ -815,84 +720,95 @@ footer p {
     background-color: #0b2545;
     transform: scale(1.02);
 }
-/* forgot password styles */
+
 
 
 /* booking comfirm and bill styles */
-.confirmation-container,
-.bill-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 20px;
-}
-
-.confirmation-box,
-.bill-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 40px;
-    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+.invoice {
+    background: var(--light-background);
+    color: var(--light-text);
+    padding: 30px;
     border-radius: 10px;
-    max-width: 600px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-top: 100px; /* to avoid header overlap */
+    margin-bottom: 30px;
+}
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.invoice-header h2 {
+    margin: 0;
+    color: var(--accent-color);
+}
+
+.company-details, .invoice-details {
+    text-align: right;
+}
+
+.customer-details, .rental-details, .payment-method {
+    margin-bottom: 20px;
+}
+
+.customer-details p, .payment-method p {
+    margin: 5px 0;
+}
+
+.rental-details table {
     width: 100%;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.confirmation-box h2,
-.bill-box h2 {
-    margin-bottom: 20px;
-    font-size: 28px;
-    color: var(--primary-color);
+.rental-details table thead {
+    background: var(--accent-color);
+    color: var(--color);
 }
 
-.confirmation-details,
-.bill-details {
+.rental-details table, .rental-details th, .rental-details td {
+    border: 1px solid #dee2e6;
+}
+
+.rental-details th, .rental-details td {
+    padding: 15px;
     text-align: left;
-    margin-bottom: 20px;
-    color: #333;
 }
 
-.confirmation-details p,
-.bill-details p {
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+.rental-details th {
+    font-weight: bold;
+}
+
+.payment-method {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.payment-method div {
+    width: 48%;
 }
 
 button {
-    padding: 12px 24px;
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: var(--color);
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
+    border: none;
+    padding: 15px 25px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background 0.3s ease;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
 button:hover {
-    background-color: #0c2646;
-    transform: scale(1.02);
+    background-color: #d32f2f;
 }
-
-.button {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: var(--primary-color);
-    color: var(--color);
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.button:hover {
-    background-color: #0c2646;
-    transform: scale(1.02);
-}
-
 /* Review style */
 
 
@@ -900,20 +816,205 @@ button:hover {
 
 
 /* forgot password style */
+.forgot-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background-color: #f0f0f0; /* Optional background color */
+}
 
+.forgot-password-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.forgot-password-box h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: var(--primary-color);
+}
+
+.forgot-password-box form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.forgot-password-box input[type="email"] {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    background-color: #9191911f;
+    border-radius: 5px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    font-size: 18px;
+    color: var(--color);
+    outline: none;
+    width: 100%;
+    max-width: 300px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.forgot-password-box input[type="email"]:focus {
+    background-color: #ffffff1f;
+    box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.2);
+}
+
+.forgot-password-box button {
+    background-color: var(--primary-color);
+    color: var(--color);
+    padding: 13px;
+    border-radius: 5px;
+    outline: none;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 300px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.forgot-password-box button:hover {
+    background-color: #0b2545;
+    transform: scale(1.02);
+}
+
+.forgot-password-box a {
+    display: block;
+    margin-top: 20px;
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+
+.forgot-password-box a:hover {
+    color: #00bfff;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
 
 
 /* profile style */
+.update-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--color);
+    padding: 20px;
+}
 
+.update-profile-form {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    max-width: 800px;
+    width: 100%;
+}
 
-/* comfirm booking style */
+.update-profile-form img.profile-pic {
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
 
+.flex {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
 
+.inputBox {
+    flex: 1;
+}
 
-/* employee mainpage style */
+.inputBox span {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
 
+.inputBox .box {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    background-color: #9191911f;
+    border-radius: 5px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    font-size: 15px;
+    color: var(--background);
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
 
-/* employee update add product style */
+.inputBox .box:focus {
+    background-color: #ffffff1f;
+    box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.2);
+}
 
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: var(--color);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
 
-/* employee manage booking style */
+.btn:hover {
+    background-color: #0c2646;
+    transform: scale(1.02);
+}
+
+.delete-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: red;
+    color: var(--color);
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+    transform: scale(1.02);
+}
+
+.message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+}

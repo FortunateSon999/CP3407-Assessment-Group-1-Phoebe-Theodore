@@ -10,6 +10,7 @@ if (!isset($_SESSION['customer_id'])) {
 }
 
 
+
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
 $result = $conn->query($sql);
@@ -107,8 +108,6 @@ if ($result === FALSE) {
                         <select id="payment_method" name="payment_method" required>
                             <option value="">Select a payment method</option>
                             <option value="credit_card">Credit Card</option>
-                            <option value="debit_card">Debit Card</option>
-                            <option value="paypal">PayPal</option>
                             <option value="cash">Cash</option>
                         </select>
                     </div>
