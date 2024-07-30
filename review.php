@@ -89,7 +89,6 @@ $reviews = $pdo->query('SELECT * FROM Review ORDER BY created_at DESC')->fetchAl
             <div class="card-header" style="color:#000000;">Product</div>
             <div class="card-body">
                 <div class="row">
-                    <!-- Fix me!!! -->
                     <!-- Section for displaying average rating and total reviews -->
                     <div class="col-sm-4 text-center">
                         <h1 class="text-warning mt-4 mb-4">
