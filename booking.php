@@ -112,11 +112,38 @@ if ($result === FALSE) {
                         </select>
                     </div>
 
+                    <div id="credit_card_details" style="display: none;">
+                        <div class="form-group">
+                            <label for="card_number">Card Number</label>
+                            <input type="text" id="card_number" name="card_number" placeholder="Enter your card number">
+                        </div>
+                        <div class="form-group">
+                            <label for="card_expiry">Expiry Date</label>
+                            <input type="month" id="card_expiry" name="card_expiry">
+                        </div>
+                        <div class="form-group">
+                            <label for="card_cvc">CVC</label>
+                            <input type="text" id="card_cvc" name="card_cvc" placeholder="Enter your card CVC">
+                        </div>
+                    </div>
+
                     <button type="submit">Submit Booking</button>
                 </form>
             </div>
         </section>
     </main>
+
+    <script>
+        function toggleCreditCardDetails() {
+            var paymentMethod = document.getElementById('payment_method').value;
+            var creditCardDetails = document.getElementById('credit_card_details');
+            if (paymentMethod === 'credit_card') {
+                creditCardDetails.style.display = 'block';
+            } else {
+                creditCardDetails.style.display = 'none';
+            }
+        }
+    </script>
 
     <footer>
         <div class="container">
