@@ -113,6 +113,9 @@ if ($result === FALSE) {
                     </div>
 
                     <div id="credit_card_details" style="display: none;">
+                        <div class=form-group>
+                            <label for="card_name">Name on Card</label>
+                            <input type="text" id="card_name" name="card_name" placeholder="Enter the name on your card">
                         <div class="form-group">
                             <label for="card_number">Card Number</label>
                             <input type="text" id="card_number" name="card_number" placeholder="Enter your card number">
