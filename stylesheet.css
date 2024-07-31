@@ -899,7 +899,79 @@ button:hover {
 
 
 /* my booking style */
+.my-bookings {
+    padding: 4rem 0;
+}
 
+.my-bookings h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--color);
+}
+
+.bookings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.booking {
+    background: var(--light-background);
+    color: var(--dark-background);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.booking h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.booking p {
+    margin-bottom: 0.5rem;
+}
+
+.booking form {
+    display: flex;
+    justify-content: center;
+}
+
+.booking button {
+    background: var(--secondary-color);
+    color: var(--color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.booking button:hover {
+    background: #b5374c;
+}
+
+.back-to-profile {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.back-to-profile button {
+    background: var(--primary-color);
+    color: var(--color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.back-to-profile button:hover {
+    background: #0c2646;
+}
 
 /* forgot password style */
 .forgot-password-container {
