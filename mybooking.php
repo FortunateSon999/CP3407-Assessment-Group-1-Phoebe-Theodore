@@ -52,7 +52,7 @@ $past_bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <div class="my-bookings">
+    <div class="container my-bookings">
         <h2>My Current Bookings</h2>
         <div class="bookings">
             <?php if (!empty($current_bookings)) : ?>
@@ -95,7 +95,12 @@ $past_bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 <p>No past bookings.</p>
             <?php endif; ?>
         </div>
+
+        <div class="back-to-profile">
+            <a href="profile.php"><button>Back to Profile</button></a>
+        </div>
     </div>
 </body>
 </html>
+
 
