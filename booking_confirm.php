@@ -50,6 +50,11 @@ $days_rented = $interval->days;
 $total_price = $days_rented * $booking['price_per_day'];
 
 $conn->close();
+
+// Payment method and details
+$payment_method = $booking['payment_method'];
+$card_last_four = substr($booking['card_number'], -4);
+$card_name = $booking['card_name'];
 ?>
 
 <!DOCTYPE html>
