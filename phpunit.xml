@@ -4,7 +4,8 @@
     stopOnFailure="false">
 
     <testsuites>
-        <testsuites name="UnitTest">
+        <testsuite name="Unit Test">
             <directory>UnitTest</directory>
+        </testsuite>
     </testsuites>
-<phpunit>
+</phpunit>
