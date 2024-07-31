@@ -1,10 +1,9 @@
 <?php
 session_start();
-
 include 'db_connection.php';
 
-// Fetch cars
-$sql = "SELECT * FROM Car LIMIT 5"; // Adjust the query as needed
+// Fetch cars with status=1
+$sql = "SELECT * FROM Car WHERE status=1 LIMIT 5"; // Adjust the query as needed
 $result = $conn->query($sql);
 
 $cars = [];
@@ -70,8 +69,8 @@ $conn->close();
         <section class="search-bar">
             <div class="container">
                 <h2>Find Your Perfect Car</h2>
-                <input type="text" placeholder="Search for cars...">
-                <button>Search</button>
+                <input type="text" placeholder="Search for cars..." id="carSearchInput">
+                <button onclick="searchCars()">Search</button>
             </div>
         </section>
 
@@ -126,5 +125,12 @@ $conn->close();
             <p>&copy; 2024 Rent-A-Wheel. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function searchCars() {
+            const input = document.getElementById('carSearchInput').value;
+            window.location.href = `search.php?query=${input}`;
+        }
+    </script>
 </body>
 </html>
