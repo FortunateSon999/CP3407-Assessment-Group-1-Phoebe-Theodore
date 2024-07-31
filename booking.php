@@ -113,6 +113,9 @@ if ($result === FALSE) {
                     </div>
 
                     <div id="credit_card_details" style="display: none;">
+                        <div class=form-group>
+                            <label for="card_name">Name on Card</label>
+                            <input type="text" id="card_name" name="card_name" placeholder="Enter the name on your card">
                         <div class="form-group">
                             <label for="card_number">Card Number</label>
                             <input type="text" id="card_number" name="card_number" placeholder="Enter your card number">
@@ -143,6 +146,42 @@ if ($result === FALSE) {
                 creditCardDetails.style.display = 'none';
             }
         }
+
+        // Add event listener to call toggleCreditCardDetails on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            var paymentMethodDropdown = document.getElementById('payment_method');
+            paymentMethodDropdown.addEventListener('change', toggleCreditCardDetails);
+        });
+    
+        function validateDates(event) {
+            var pickupDate = new Date(document.getElementById('pickup_date').value);
+            var returnDate = new Date(document.getElementById('return_date').value);
+            var currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Set to start of the day
+
+            if (pickupDate < currentDate) {
+                alert("Pickup date cannot be before the current date.");
+                event.preventDefault();
+                return false;
+            }
+
+            if (returnDate < currentDate) {
+                alert("Return date cannot be before the current date.");
+                event.preventDefault();
+                return false;
+            }
+
+            if (returnDate < pickupDate) {
+                alert("Return date cannot be before the pickup date.");
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Add event listener to validate dates on form submission
+        document.querySelector('form').addEventListener('submit', validateDates);
     </script>
 
     <footer>
