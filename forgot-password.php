@@ -63,16 +63,21 @@ if (isset($_POST['check-email'])) {
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <form action="forgot-password.php" method="POST">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <button type="submit" name="check-email">Send Reset Code</button>
-    </form>
-    <?php
-    if (count($errors) > 0) {
-        foreach ($errors as $error) {
-            echo "<div>$error</div>";
-        }
-    }
-    ?>
+    <div class="forgot-password-container">
+        <div class="forgot-password-box">
+            <h2>Forgot Password</h2>
+            <form action="forgot-password.php" method="POST">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit" name="check-email">Send Reset Code</button>
+            </form>
+            <?php
+            if (isset($errors) && count($errors) > 0) {
+                foreach ($errors as $error) {
+                    echo "<div class='error'>$error</div>";
+                }
+            }
+            ?>
+        </div>
+    </div>
 </body>
 </html>

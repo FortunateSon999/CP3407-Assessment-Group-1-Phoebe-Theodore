@@ -49,6 +49,12 @@ $interval = $pickup_date->diff($return_date);
 $days_rented = $interval->days;
 $total_price = $days_rented * $booking['price_per_day'];
 
+// Save total price to the Rentals table
+$update_total_price_sql = "UPDATE Rentals SET total_price = ? WHERE rental_id = ?";
+$stmt_update = $conn->prepare($update_total_price_sql);
+$stmt_update->bind_param("di", $total_price, $rental_id);
+$stmt_update->execute();
+
 $conn->close();
 ?>
 

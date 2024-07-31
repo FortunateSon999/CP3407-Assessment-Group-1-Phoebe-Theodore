@@ -990,6 +990,24 @@ button:hover {
     transform: scale(1.02);
 }
 
+.mybooking-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: var(--color);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.mybooking-btn:hover {
+    background-color: #0c2646;
+    transform: scale(1.02);
+}
+
 .delete-btn {
     display: block;
     width: 100%;

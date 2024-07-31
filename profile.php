@@ -1,9 +1,9 @@
 <?php
-include 'db_connection.php';
 session_start();
+include 'db_connection.php';
 
 if (!isset($_SESSION['customer_id'])) {
-    header('Location: login.php');
+    header("Location: login.php");
     exit();
 }
 
@@ -16,9 +16,9 @@ if (isset($_POST['update_profile'])) {
     $update_phone = mysqli_real_escape_string($conn, $_POST['update_phone']);
     $update_age = mysqli_real_escape_string($conn, $_POST['update_age']);
 
-    mysqli_query($conn, "UPDATE `Customer` SET first_name = '$update_first_name', last_name = '$update_last_name', email = '$update_email', phone = '$update_phone', age = '$update_age' WHERE customer_id = '$customer_id'") or die('query failed');
+    mysqli_query($conn, "UPDATE `Customer` SET first_name = '$update_first_name', last_name = '$update_last_name', email = '$update_email', phone = '$update_phone', age = '$update_age' WHERE customer_id = '$customer_id'") or die('Query failed');
 
-    $old_pass = $_POST['old_pass'];
+    $old_pass = md5($_POST['old_pass']);
     $update_pass = mysqli_real_escape_string($conn, $_POST['update_pass']);
     $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
     $confirm_pass = mysqli_real_escape_string($conn, $_POST['confirm_pass']);
@@ -30,7 +30,7 @@ if (isset($_POST['update_profile'])) {
             $message[] = 'Confirm password not matched!';
         } else {
             $hashed_new_pass = md5($confirm_pass);
-            mysqli_query($conn, "UPDATE `Customer` SET password = '$hashed_new_pass' WHERE customer_id = '$customer_id'") or die('query failed');
+            mysqli_query($conn, "UPDATE `Customer` SET password = '$hashed_new_pass' WHERE customer_id = '$customer_id'") or die('Query failed');
             $message[] = 'Password updated successfully!';
         }
     }
@@ -44,7 +44,7 @@ if (isset($_POST['update_profile'])) {
         if ($update_image_size > 2000000) {
             $message[] = 'Image is too large';
         } else {
-            $image_update_query = mysqli_query($conn, "UPDATE `Customer` SET profile_picture = '$update_image_folder' WHERE customer_id = '$customer_id'") or die('query failed');
+            $image_update_query = mysqli_query($conn, "UPDATE `Customer` SET profile_picture = '$update_image_folder' WHERE customer_id = '$customer_id'") or die('Query failed');
             if ($image_update_query) {
                 if (move_uploaded_file($update_image_tmp_name, $update_image_folder)) {
                     $message[] = 'Image updated successfully!';
@@ -59,6 +59,7 @@ if (isset($_POST['update_profile'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,25 +67,25 @@ if (isset($_POST['update_profile'])) {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Update Profile</title>
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
    
-<div class="update-profile">
+<div class="update-profile-container">
 
    <?php
-      $select = mysqli_query($conn, "SELECT * FROM `Customer` WHERE customer_id = '$customer_id'") or die('query failed');
+      $select = mysqli_query($conn, "SELECT * FROM `Customer` WHERE customer_id = '$customer_id'") or die('Query failed');
       if (mysqli_num_rows($select) > 0) {
          $fetch = mysqli_fetch_assoc($select);
       }
    ?>
 
-   <form action="" method="post" enctype="multipart/form-data">
+   <form action="" method="post" enctype="multipart/form-data" class="update-profile-form">
       <?php
          if (isset($fetch['profile_picture']) && !empty($fetch['profile_picture'])) {
-            echo '<img src="'.$fetch['profile_picture'].'" alt="Profile Picture">';
+            echo '<img src="'.$fetch['profile_picture'].'" alt="Profile Picture" class="profile-pic">';
          } else {
-            echo '<img src="profiles/default.png" alt="Default Profile Picture">';
+            echo '<img src="profiles/default.png" alt="Default Profile Picture" class="profile-pic">';
          }
          if (isset($message)) {
             foreach ($message as $msg) {
@@ -118,6 +119,7 @@ if (isset($_POST['update_profile'])) {
          </div>
       </div>
       <input type="submit" value="Update Profile" name="update_profile" class="btn">
+      <a href="mybooking.php" class="mybooking-btn">View My Booking</a>
       <a href="homepage.php" class="delete-btn">Go Back</a>
    </form>
 
@@ -125,7 +127,3 @@ if (isset($_POST['update_profile'])) {
 
 </body>
 </html>
-
-
-
-

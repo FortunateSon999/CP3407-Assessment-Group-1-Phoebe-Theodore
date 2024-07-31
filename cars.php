@@ -2,6 +2,7 @@
 session_start();
 
 include 'db_connection.php';
+include 'car_funtions.php';
 
 // Fetch car data from the Car table
 $sql = "SELECT car_id, brand, model, year, color, fuel_type, seat_number, capacity, registration, status, price_per_day, image_path FROM Car";
