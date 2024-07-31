@@ -117,7 +117,7 @@ $conn->close();
             </div>
             <div class="payment-method">
                 <p><strong>Payment Method:</strong> <?php echo ucfirst($payment_method); ?></p>
-                <?php if (payment_method === 'credit_card'): ?>
+                <?php if ($payment_method === 'credit_card'): ?>
                     <p><strong>Payment Details:</strong></p>
                     <p>Card Number: **** **** **** <?php echo $card_last_four; ?></p>
                     <p>Cardholder Name: <?php echo htmlspecialchars($card_name); ?></p>
