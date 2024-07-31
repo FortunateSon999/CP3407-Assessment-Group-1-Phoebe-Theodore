@@ -38,7 +38,7 @@ if ($payment_method === 'credit_card') {
     // Insert booking details into Rentals table
     $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method, card_number, card_name) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved', ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iissss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $payment_method, $card_number, $card_name);
+    $stmt->bind_param("iissssss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $payment_method, $card_number, $card_name);
 
     if ($stmt->execute()) {
         $rental_id = $stmt->insert_id;
