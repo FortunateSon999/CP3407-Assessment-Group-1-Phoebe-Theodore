@@ -22,6 +22,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $return_time = $_POST['return_time'];
     $payment_method = $_POST['payment_method'];
 
+if ($payment_method === 'credit_card') {
+    $card_name = $_POST['card_name'];
+    $card_number = $_POST['card_number'];
+    $card_expiry = $_POST['card_expiry'];
+    $card_cvc = $_POST['card_cvc'];
+        
+    // Store the last 4 digits of the card number in the session
+    $_SESSION['card_last_four'] = substr($card_number, -4);
+}
+
     // Insert booking details into Rentals table
     $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved')";
     $stmt = $conn->prepare($sql);

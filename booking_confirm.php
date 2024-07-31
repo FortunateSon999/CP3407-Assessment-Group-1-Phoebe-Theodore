@@ -116,10 +116,12 @@ $conn->close();
                 <p><strong>Total:</strong> $<?php echo $total_price; ?></p>
             </div>
             <div class="payment-method">
-                <p><strong>Payment Method:</strong> Credit Card</p>
-                <p><strong>Payment Details:</strong></p>
-                <p>Card Number: **** **** **** ****</p>
-                <p>Cardholder Name: John Smith</p>
+                <p><strong>Payment Method:</strong> <?php echo ucfirst($payment_method); ?></p>
+                <?php if (payment_method === 'credit_card'): ?>
+                    <p><strong>Payment Details:</strong></p>
+                    <p>Card Number: **** **** **** <?php echo $card_last_four; ?></p>
+                    <p>Cardholder Name: <?php echo htmlspecialchars($card_name); ?></p>
+                <?php endif; ?>
             </div>
             <button onclick="window.print()">Print Invoice</button>
         </section>
