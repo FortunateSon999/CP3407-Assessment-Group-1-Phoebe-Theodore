@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include 'db_connection.php';
 
 // Check if customer is logged in
@@ -22,23 +21,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $return_time = $_POST['return_time'];
     $payment_method = $_POST['payment_method'];
 
-if ($payment_method === 'credit_card') {
-    $card_name = $_POST['card_name'];
-    $card_number = $_POST['card_number'];
-    $card_expiry = $_POST['card_expiry'];
-    $card_cvc = $_POST['card_cvc'];
+    if ($payment_method === 'credit_card') {
+        $card_name = $_POST['card_name'];
+        $card_number = $_POST['card_number'];
+        $card_expiry = $_POST['card_expiry'];
+        $card_cvc = $_POST['card_cvc'];
         
-    // Store the last 4 digits of the card number in the session
-    $_SESSION['card_last_four'] = substr($card_number, -4);
-} else {
-    $card_name = null;
-    $card_number = null;
-}
+        // Store the last 4 digits of the card number in the session
+        $_SESSION['card_last_four'] = substr($card_number, -4);
+    } else {
+        $card_name = null;
+        $card_number = null;
+    }
 
     // Insert booking details into Rentals table
     $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method, card_number, card_name) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved', ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iissssss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $payment_method, $card_number, $card_name);
+    $stmt->bind_param("iisssssss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $payment_method, $card_number, $card_name);
 
     if ($stmt->execute()) {
         $rental_id = $stmt->insert_id;
