@@ -30,12 +30,15 @@ if ($payment_method === 'credit_card') {
         
     // Store the last 4 digits of the card number in the session
     $_SESSION['card_last_four'] = substr($card_number, -4);
+} else {
+    $card_name = null;
+    $card_number = null;
 }
 
     // Insert booking details into Rentals table
-    $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved')";
+    $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method, card_number, card_name) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved', ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iissss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time);
+    $stmt->bind_param("iissss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $payment_method, $card_number, $card_name);
 
     if ($stmt->execute()) {
         $rental_id = $stmt->insert_id;
