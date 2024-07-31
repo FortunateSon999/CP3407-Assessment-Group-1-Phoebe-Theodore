@@ -1,25 +1,18 @@
 <?php
 session_start();
-
 include 'db_connection.php';
-
 // Assuming customer_id is stored in the session after login
 if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
-
-
-
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
 $result = $conn->query($sql);
-
 if ($result === FALSE) {
     echo "Error: " . $conn->error;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +42,6 @@ if ($result === FALSE) {
             </nav>
         </div>
     </header>
-
     <main>
         <section class="booking-form">
             <div class="container">
@@ -57,7 +49,6 @@ if ($result === FALSE) {
                 <p>Please fill out the form below to book a car.</p>
                 <form action="submit_booking.php" method="POST">
                     <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>">
-
                     <div class="form-group">
                         <label for="car_id">Select Car</label>
                         <select id="car_id" name="car_id" required>
@@ -73,7 +64,6 @@ if ($result === FALSE) {
                             ?>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label for="fullname">Full Name</label>
                         <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
@@ -102,7 +92,6 @@ if ($result === FALSE) {
                         <label for="return_time">Return Time</label>
                         <input type="time" id="return_time" name="return_time" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="payment_method">Payment Method</label>
                         <select id="payment_method" name="payment_method" required>
@@ -111,11 +100,11 @@ if ($result === FALSE) {
                             <option value="cash">Cash</option>
                         </select>
                     </div>
-
                     <div id="credit_card_details" style="display: none;">
-                        <div class=form-group>
+                        <div class="form-group">
                             <label for="card_name">Name on Card</label>
                             <input type="text" id="card_name" name="card_name" placeholder="Enter the name on your card">
+                        </div>
                         <div class="form-group">
                             <label for="card_number">Card Number</label>
                             <input type="text" id="card_number" name="card_number" placeholder="Enter your card number">
@@ -129,13 +118,11 @@ if ($result === FALSE) {
                             <input type="text" id="card_cvc" name="card_cvc" placeholder="Enter your card CVC">
                         </div>
                     </div>
-
                     <button type="submit">Submit Booking</button>
                 </form>
             </div>
         </section>
     </main>
-
     <script>
         function toggleCreditCardDetails() {
             var paymentMethod = document.getElementById('payment_method').value;
@@ -146,44 +133,37 @@ if ($result === FALSE) {
                 creditCardDetails.style.display = 'none';
             }
         }
-
         // Add event listener to call toggleCreditCardDetails on page load
         document.addEventListener('DOMContentLoaded', function() {
             var paymentMethodDropdown = document.getElementById('payment_method');
             paymentMethodDropdown.addEventListener('change', toggleCreditCardDetails);
         });
-    
+
         function validateDates(event) {
             var pickupDate = new Date(document.getElementById('pickup_date').value);
             var returnDate = new Date(document.getElementById('return_date').value);
             var currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0); // Set to start of the day
-
             if (pickupDate < currentDate) {
                 alert("Pickup date cannot be before the current date.");
                 event.preventDefault();
                 return false;
             }
-
             if (returnDate < currentDate) {
                 alert("Return date cannot be before the current date.");
                 event.preventDefault();
                 return false;
             }
-
             if (returnDate < pickupDate) {
                 alert("Return date cannot be before the pickup date.");
                 event.preventDefault();
                 return false;
             }
-
             return true;
         }
-
         // Add event listener to validate dates on form submission
         document.querySelector('form').addEventListener('submit', validateDates);
     </script>
-
     <footer>
         <div class="container">
             <p>&copy; 2024 Rent-A-Wheel. All rights reserved.</p>
@@ -191,7 +171,6 @@ if ($result === FALSE) {
     </footer>
 </body>
 </html>
-
 <?php
 $conn->close();
 ?>
