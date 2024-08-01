@@ -60,32 +60,34 @@ Total: 36 days
 
 
 ### Iteration 2 [15/7/24 - 31/7/24]
-1. Homepage Enhancements (Priority: 30, Effort Estimate: 1 day)
+1. Homepage Enhancements (Priority: 30, Effort Estimate: 3 days)
    
-2. User Profile Funtionality (Priority: 30, Effort Estimate: 1 day)
+2. User Profile Funtionality (Priority: 30, Effort Estimate: 3 days)
     
-3. Booking system update (Priority: 10, Effort Estimate: 2 days)
+3. Booking system update (Priority: 10, Effort Estimate: 3 days)
 
-4. Password management (Priority: 30, Effort Estimate: 2 days)
+4. Password management (Priority: 30, Effort Estimate: 3 days)
 
-5. Employee Login (Priority: 30, Effort Estimate: 1 day)
-    
-6. Manage Rentals Interface (Priority: 50, Effort Estimate: 3 days)
- 
-7. Car Management Interface (Priority: 50, Effort Estimate: 3 days)
-   
-8. Employee Management Interface (Priority: 50, Effort Estimate: 3 days)
+5. AI Chatbot and Live Chat (Priority: 40, Effort Estimate: 11 days)
 
-9. AI Chatbot and Live Chat (Priority: 40, Effort Estimate: 10 days)
-
-10. Payment Gatway Integration (Priority: 10, Effort Estimate: 8 days)
+6. Payment Gatway Integration (Priority: 10, Effort Estimate: 11 days)
 
 
 Total: 34 days
 
 
-### Iteration 2 [1/8/24 - 11/8/24]
+### Iteration 3 [1/8/24 - 11/8/24]
+1. AI Chatbot and Live Chat (Priority: 40, Effort Estimate: 6 days)
+
+2. Discount Integration (Priority: 30, Effort Estimate: 4 days)
+
+3. Stars Animation Fix (Priority: 20, Effort Estimate: 2 days)
+
+4. Design Improvements (Priority: 30, Effort Estimate: 4 days)
+
+5. Unit Testing for Critical Functionalities (Priority: 30, Effort Estimate: 6 days)
 
 Total: 22 days
+
 
 Total effort time: 92 days

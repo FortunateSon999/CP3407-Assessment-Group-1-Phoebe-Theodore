@@ -1,4 +1,4 @@
-## Iteration 1: Enhanced Functionality and User Experience
+## Iteration 2: Enhanced Functionality and User Experience
 
 Objective:
      - Improve existing features based on user feedback
