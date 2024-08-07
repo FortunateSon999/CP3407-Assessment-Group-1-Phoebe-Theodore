@@ -1,34 +1,31 @@
 <?php
 include 'db_connection.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $discount_code = $_POST['discount_code'];
+    $discount_id = $_POST['discount_id'];
 
-    // Query to check if the discount code exists and is valid
-    $sql = "SELECT discount_percent FROM Discounts WHERE code = ? AND valid = 1";
+    // Check if the discount code is valid
+    $sql = "SELECT discount_id, discount_percent FROM discount WHERE discount_id = ? AND code = ? AND is_active = 1";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $discount_code);
+    $stmt->bind_param("is", $discount_id, $discount_code);
     $stmt->execute();
-    $stmt->bind_result($discount_percent);
-    $stmt->fetch();
+    $result = $stmt->get_result();
 
-    if ($discount_percent) {
-        // If valid, return the discount percent and a success message
-        $response = [
+    if ($result->num_rows > 0) {
+        $discount = $result->fetch_assoc();
+        $response = array(
             'success' => true,
-            'discount_percent' => $discount_percent,
-            'total_price' => 'calculate_total_price_with_discount()', // Placeholder for total price calculation
-        ];
+            'discount_percent' => $discount['discount_percent']
+        );
     } else {
-        // If not valid, return an error message
-        $response = [
+        $response = array(
             'success' => false,
-            'message' => 'Invalid or expired discount code',
-        ];
+            'message' => 'Invalid discount code.'
+        );
     }
 
     echo json_encode($response);
-    $stmt->close();
+    $conn->close();
 }
-$conn->close();
 ?>

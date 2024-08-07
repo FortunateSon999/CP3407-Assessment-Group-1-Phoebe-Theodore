@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include 'db_connection.php';
 
 // Check if customer is logged in
@@ -156,3 +155,4 @@ $card_name = $payment_method === 'credit_card' ? htmlspecialchars($booking['card
     </footer>
 </body>
 </html>
+

@@ -1,18 +1,25 @@
 <?php
 session_start();
 include 'db_connection.php';
-// Assuming customer_id is stored in the session after login
+
+// Check if customer is logged in
 if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
-$customer_id = $_SESSION['customer_id'];
 
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
 $result = $conn->query($sql);
 if ($result === FALSE) {
-    echo "Error: " . $conn->error;
+    echo "Error fetching cars: " . $conn->error;
+}
+
+// Fetch available discounts
+$discountSql = "SELECT discount_id, discount_percent FROM discount";
+$discountResult = $conn->query($discountSql);
+if ($discountResult === FALSE) {
+    echo "Error fetching discounts: " . $conn->error;
 }
 ?>
 <!DOCTYPE html>
@@ -22,6 +29,7 @@ if ($result === FALSE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking - Rent-A-Wheel</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -50,7 +58,7 @@ if ($result === FALSE) {
                 <h2>Car Booking Form</h2>
                 <p>Please fill out the form below to book a car.</p>
                 <form action="submit_booking.php" method="POST">
-                    <input type="hidden" name="customer_id" value="<?php echo $customer_id; ?>">
+                    <input type="hidden" name="customer_id" value="<?php echo $_SESSION['customer_id']; ?>">
                     <div class="form-group">
                         <label for="car_id">Select Car</label>
                         <select id="car_id" name="car_id" required>
@@ -95,10 +103,25 @@ if ($result === FALSE) {
                         <input type="time" id="return_time" name="return_time" required>
                     </div>
                     <div class="form-group">
+                        <label for="discount_id">Select Discount</label>
+                        <select id="discount_id" name="discount_id">
+                            <option value="">No Discount</option>
+                            <?php
+                            if ($discountResult->num_rows > 0) {
+                                while($discountRow = $discountResult->fetch_assoc()) {
+                                    echo "<option value='" . $discountRow['discount_id'] . "'>" . $discountRow['discount_percent'] . "% off</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No discounts available</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="discount_code">Discount Code</label>
-                        <input type="text" id="discount_code" name="discount_code" placeholder="Enter discount code">
+                        <input type="text" id="discount_code" name="discount_code" placeholder="Enter discount code if applicable">
                         <button type="button" id="apply_discount">Apply Discount</button>
-                        <span id="discount_message"></span>
+                        <p id="discount_message"></p>
                     </div>
                     <div class="form-group">
                         <label for="payment_method">Payment Method</label>
@@ -132,6 +155,34 @@ if ($result === FALSE) {
         </section>
     </main>
     <script>
+        // JavaScript for handling discount code application
+        document.getElementById('apply_discount').addEventListener('click', function() {
+            var discountCode = document.getElementById('discount_code').value;
+            var discountId = document.getElementById('discount_id').value;
+            if (discountCode && discountId) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'validate_discount.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var discountMessage = document.getElementById('discount_message');
+                        if (response.success) {
+                            discountMessage.textContent = 'Discount applied: ' + response.discount_percent + '% off';
+                            discountMessage.style.color = 'green';
+                            document.querySelector('form').insertAdjacentHTML('beforeend', '<input type="hidden" name="discount_percent" value="' + response.discount_percent + '">');
+                        } else {
+                            discountMessage.textContent = response.message;
+                            discountMessage.style.color = 'red';
+                        }
+                    }
+                };
+                xhr.send('discount_code=' + discountCode + '&discount_id=' + discountId);
+            } else {
+                alert("Please select a discount and enter the discount code.");
+            }
+        });
+        
         function toggleCreditCardDetails() {
             var paymentMethod = document.getElementById('payment_method').value;
             var creditCardDetails = document.getElementById('credit_card_details');
@@ -145,56 +196,32 @@ if ($result === FALSE) {
         document.addEventListener('DOMContentLoaded', function() {
             var paymentMethodDropdown = document.getElementById('payment_method');
             paymentMethodDropdown.addEventListener('change', toggleCreditCardDetails);
-
-            document.getElementById('apply_discount').addEventListener('click', function() {
-                var discountCode = document.getElementById('discount_code').value;
-                if (discountCode) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'validate_discount.php', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var response = JSON.parse(xhr.responseText);
-                            var discountMessage = document.getElementById('discount_message');
-                            if (response.success) {
-                                discountMessage.textContent = 'Discount applied: ' + response.discount_percent + '% off';
-                                discountMessage.style.color = 'green';
-                                document.getElementById('total_price').value = response.total_price; // Update total price if needed
-                            } else {
-                                discountMessage.textContent = response.message;
-                                discountMessage.style.color = 'red';
-                            }
-                        }
-                    };
-                    xhr.send('discount_code=' + discountCode);
-                }
-            });
-
-            function validateDates(event) {
-                var pickupDate = new Date(document.getElementById('pickup_date').value);
-                var returnDate = new Date(document.getElementById('return_date').value);
-                var currentDate = new Date();
-                currentDate.setHours(0, 0, 0, 0); // Set to start of the day
-                if (pickupDate < currentDate) {
-                    alert("Pickup date cannot be before the current date.");
-                    event.preventDefault();
-                    return false;
-                }
-                if (returnDate < currentDate) {
-                    alert("Return date cannot be before the current date.");
-                    event.preventDefault();
-                    return false;
-                }
-                if (returnDate < pickupDate) {
-                    alert("Return date cannot be before the pickup date.");
-                    event.preventDefault();
-                    return false;
-                }
-                return true;
-            }
-            // Add event listener to validate dates on form submission
-            document.querySelector('form').addEventListener('submit', validateDates);
         });
+
+        function validateDates(event) {
+            var pickupDate = new Date(document.getElementById('pickup_date').value);
+            var returnDate = new Date(document.getElementById('return_date').value);
+            var currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Set to start of the day
+            if (pickupDate < currentDate) {
+                alert("Pickup date cannot be before the current date.");
+                event.preventDefault();
+                return false;
+            }
+            if (returnDate < currentDate) {
+                alert("Return date cannot be before the current date.");
+                event.preventDefault();
+                return false;
+            }
+            if (returnDate < pickupDate) {
+                alert("Return date cannot be before the pickup date.");
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+        // Add event listener to validate dates on form submission
+        document.querySelector('form').addEventListener('submit', validateDates);
     </script>
     <footer>
         <div class="container">

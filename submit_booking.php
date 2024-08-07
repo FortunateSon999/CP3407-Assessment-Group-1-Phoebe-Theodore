@@ -11,88 +11,71 @@ if (!isset($_SESSION['customer_id'])) {
 $customer_id = $_SESSION['customer_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and validate input data
-    $car_id = filter_input(INPUT_POST, 'car_id', FILTER_VALIDATE_INT);
-    $fullname = filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_STRING);
-    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $pickup_date = filter_input(INPUT_POST, 'pickup_date', FILTER_SANITIZE_STRING);
-    $pickup_time = filter_input(INPUT_POST, 'pickup_time', FILTER_SANITIZE_STRING);
-    $return_date = filter_input(INPUT_POST, 'return_date', FILTER_SANITIZE_STRING);
-    $return_time = filter_input(INPUT_POST, 'return_time', FILTER_SANITIZE_STRING);
-    $payment_method = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_STRING);
-    $discount_code = filter_input(INPUT_POST, 'discount_code', FILTER_SANITIZE_STRING); // New field
-
-    if (!$car_id || !$fullname || !$phone || !$email || !$pickup_date || !$pickup_time || !$return_date || !$return_time || !$payment_method) {
-        die("Invalid input data.");
-    }
+    $car_id = $_POST['car_id'];
+    $fullname = $_POST['fullname'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $pickup_date = $_POST['pickup_date'];
+    $pickup_time = $_POST['pickup_time'];
+    $return_date = $_POST['return_date'];
+    $return_time = $_POST['return_time'];
+    $payment_method = $_POST['payment_method'];
+    $discount_id = $_POST['discount_id'];
+    $discount_code = $_POST['discount_code'];
 
     if ($payment_method === 'credit_card') {
-        $card_name = filter_input(INPUT_POST, 'card_name', FILTER_SANITIZE_STRING);
-        $card_number = filter_input(INPUT_POST, 'card_number', FILTER_SANITIZE_STRING);
-        $card_expiry = filter_input(INPUT_POST, 'card_expiry', FILTER_SANITIZE_STRING);
-        $card_cvc = filter_input(INPUT_POST, 'card_cvc', FILTER_SANITIZE_STRING);
+        $card_name = $_POST['card_name'];
+        $card_number = $_POST['card_number'];
+        $card_expiry = $_POST['card_expiry'];
+        $card_cvc = $_POST['card_cvc'];
         
         // Store the last 4 digits of the card number in the session
         $_SESSION['card_last_four'] = substr($card_number, -4);
     } else {
         $card_name = null;
         $card_number = null;
-        $card_expiry = null;
-        $card_cvc = null;
     }
 
-    // Fetch the discount percentage from the database if a discount code is provided
-    $discount_percentage = 0;
-    if ($discount_code) {
-        $sql_discount = "SELECT discount_percentage FROM Discounts WHERE discount_code = ?";
-        $stmt_discount = $conn->prepare($sql_discount);
-        $stmt_discount->bind_param("s", $discount_code);
-        $stmt_discount->execute();
-        $result_discount = $stmt_discount->get_result();
-
-        if ($result_discount->num_rows > 0) {
-            $discount_row = $result_discount->fetch_assoc();
-            $discount_percentage = $discount_row['discount_percentage'];
-        }
-        $stmt_discount->close();
-    }
-
-    // Calculate rental period
-    $pickup_date = new DateTime($pickup_date);
-    $return_date = new DateTime($return_date);
-    $interval = $pickup_date->diff($return_date);
+    // Calculate the rental duration in days
+    $pickup_date_obj = new DateTime($pickup_date);
+    $return_date_obj = new DateTime($return_date);
+    $interval = $pickup_date_obj->diff($return_date_obj);
     $days_rented = $interval->days;
 
-    // Fetch the price per day
-    $sql_price = "SELECT price_per_day FROM Car WHERE car_id = ?";
-    $stmt_price = $conn->prepare($sql_price);
-    $stmt_price->bind_param("i", $car_id);
-    $stmt_price->execute();
-    $result_price = $stmt_price->get_result();
-
-    if ($result_price->num_rows > 0) {
-        $price_row = $result_price->fetch_assoc();
-        $price_per_day = $price_row['price_per_day'];
+    // Fetch the car price per day
+    $sql_car = "SELECT price_per_day FROM Car WHERE car_id = ?";
+    $stmt_car = $conn->prepare($sql_car);
+    $stmt_car->bind_param("i", $car_id);
+    $stmt_car->execute();
+    $result_car = $stmt_car->get_result();
+    if ($result_car->num_rows > 0) {
+        $car_row = $result_car->fetch_assoc();
+        $price_per_day = $car_row['price_per_day'];
     } else {
         die("Car not found.");
     }
-    $stmt_price->close();
 
-    // Calculate total price
+    // Calculate the initial total price
     $total_price = $days_rented * $price_per_day;
 
-    // Apply discount
-    $discount_amount = ($discount_percentage / 100) * $total_price;
-    $total_price_after_discount = $total_price - $discount_amount;
+    // Apply discount if provided
+    if ($discount_id && $discount_code) {
+        $sql_discount = "SELECT discount_percent FROM discount WHERE discount_id = ? AND discount_code = ?";
+        $stmt_discount = $conn->prepare($sql_discount);
+        $stmt_discount->bind_param("is", $discount_id, $discount_code);
+        $stmt_discount->execute();
+        $result_discount = $stmt_discount->get_result();
+        if ($result_discount->num_rows > 0) {
+            $discount_row = $result_discount->fetch_assoc();
+            $discount_percent = $discount_row['discount_percent'];
+            $total_price = $total_price - ($total_price * ($discount_percent / 100));
+        }
+    }
 
     // Insert booking details into Rentals table
     $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method, card_number, card_name) VALUES (?, ?, ?, ?, ?, ?, ?, 'reserved', ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    if ($stmt === false) {
-        die("Error preparing statement: " . $conn->error);
-    }
-    $stmt->bind_param("iisssssss", $customer_id, $car_id, $pickup_date->format('Y-m-d'), $pickup_time, $return_date->format('Y-m-d'), $return_time, $total_price_after_discount, $payment_method, $card_number, $card_name);
+    $stmt->bind_param("iissssisss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $total_price, $payment_method, $card_number, $card_name);
 
     if ($stmt->execute()) {
         $rental_id = $stmt->insert_id;
@@ -100,18 +83,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insert payment details into Payment table
         $sql_payment = "INSERT INTO Payment (rental_id, amount, payment_date, payment_method) VALUES (?, ?, CURDATE(), ?)";
         $stmt_payment = $conn->prepare($sql_payment);
-        if ($stmt_payment === false) {
-            die("Error preparing payment statement: " . $conn->error);
-        }
-        $stmt_payment->bind_param("ids", $rental_id, $total_price_after_discount, $payment_method);
+        $stmt_payment->bind_param("ids", $rental_id, $total_price, $payment_method);
 
         if ($stmt_payment->execute()) {
             // Update the car status to indicate it is booked (false or 0)
             $sql_update_car_status = "UPDATE Car SET status = 0 WHERE car_id = ?";
             $stmt_update_car_status = $conn->prepare($sql_update_car_status);
-            if ($stmt_update_car_status === false) {
-                die("Error preparing car status update statement: " . $conn->error);
-            }
             $stmt_update_car_status->bind_param("i", $car_id);
             $stmt_update_car_status->execute();
 
@@ -124,10 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Booking Error: " . $stmt->error;
     }
-
-    $stmt->close();
-    $stmt_payment->close();
-    $stmt_update_car_status->close();
 } else {
     die("Invalid request method.");
 }
