@@ -1,133 +1,68 @@
 // document.addEventListener('DOMContentLoaded', function() {
-//     const chatBox = document.getElementById('chat-box');
-//     const userInput = document.getElementById('user-input');
+//     const chatBox = document.querySelector('.chat-box');
 
-//     function sendMessage() {
-//         const message = userInput.value.trim();
-//         if (message === '') return;
+//     function displayMenu() {
+//         const menuOptions = [
+//             'Option 1: Get weather',
+//             'Option 2: Get news',
+//             'Option 3: Get a joke'
+//         ];
 
-//         // Display user message
+//         const menuDiv = document.createElement('div');
+//         menuDiv.classList.add('menu-options');
+
+//         menuOptions.forEach(option => {
+//             const optionDiv = document.createElement('div');
+//             optionDiv.classList.add('menu-option');
+//             optionDiv.textContent = option;
+//             optionDiv.addEventListener('click', () => handleMenuSelection(option));
+//             menuDiv.appendChild(optionDiv);
+//         });
+
+//         chatBox.appendChild(menuDiv);
+//         chatBox.scrollTop = chatBox.scrollHeight;
+//     }
+
+//     function handleMenuSelection(option) {
+//         // Clear previous menu options
+//         const menuDiv = document.querySelector('.menu-options');
+//         if (menuDiv) {
+//             menuDiv.remove();
+//         }
+
+//         // Display selected option
 //         const userMessageDiv = document.createElement('div');
 //         userMessageDiv.classList.add('user-message');
-//         userMessageDiv.textContent = message;
+//         userMessageDiv.textContent = option;
 //         chatBox.appendChild(userMessageDiv);
 
-//         // Clear input field
-//         userInput.value = '';
-
-//         // Simulate bot response
-//         setTimeout(() => {
+//         // Send the selected option to the server
+//         fetch('chatbot_response.php', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({ selection: option.toLowerCase().split(': ')[1] })
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             // Display bot response
 //             const botMessageDiv = document.createElement('div');
 //             botMessageDiv.classList.add('bot-message');
-//             botMessageDiv.textContent = "This is a simulated response.";
+//             botMessageDiv.textContent = data.response;
 //             chatBox.appendChild(botMessageDiv);
 
 //             // Scroll to the bottom of the chat box
 //             chatBox.scrollTop = chatBox.scrollHeight;
-//         }, 1000);
+
+//             // Display menu again for the next interaction
+//             displayMenu();
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//         });
 //     }
 
-//     document.querySelector('button').addEventListener('click', sendMessage);
-//     userInput.addEventListener('keypress', function(event) {
-//         if (event.key === 'Enter') {
-//             sendMessage();
-//         }
-//     });
+//     // Initialize the chat with the menu
+//     displayMenu();
 // });
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const chatBox = document.getElementById('chat-box');
-    const userInput = document.getElementById('user-input');
-
-    function sendMessage() {
-        const message = userInput.value.trim();
-        if (message === '') return;
-
-        // Display user message
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.classList.add('user-message');
-        userMessageDiv.textContent = message;
-        chatBox.appendChild(userMessageDiv);
-
-        // Clear input field
-        userInput.value = '';
-
-        // Send message to server
-        fetch('chatbot_response.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: message })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Display bot response
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('bot-message');
-            botMessageDiv.textContent = data.response;
-            chatBox.appendChild(botMessageDiv);
-
-            // Scroll to the bottom of the chat box
-            chatBox.scrollTop = chatBox.scrollHeight;
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    document.querySelector('button').addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    });
-});
-
-function sendMessage() {
-    const userInput = document.getElementById('user-input');
-    const message = userInput.value.trim();
-    if (message) {
-        displayMessage(message, 'user');
-        userInput.value = '';
-        getBotResponse(message);
-    }
-}
-
-
-
-function displayMessage(message, sender) {
-    const chatBox = document.getElementById('chat-box');
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message', sender);
-    messageElement.textContent = message;
-    chatBox.appendChild(messageElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function getBotResponse(message) {
-    fetch('chatbot_response.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: message })
-    })
-    .then(response => response.json())
-    .then(data => {
-        displayMessage(data.response, 'bot');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-
-function displayMenu() {
-    const menuOptions = [
-        '1. Check account balance\n',
-        '2. Transfer money\n',
-        '3. Pay bills\n',
-        '4. Contact support\n'
-    ];
-    const menuMessage = 'Here are some things you can ask me:\n' + menuOptions.join('\n');
-    displayMessage(menuMessage, 'bot');
-}
