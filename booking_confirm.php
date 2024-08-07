@@ -14,6 +14,10 @@ $customer_id = $_SESSION['customer_id'];
 // Get rental_id from query parameter
 $rental_id = isset($_GET['rental_id']) ? intval($_GET['rental_id']) : 0;
 
+if ($rental_id <= 0) {
+    die("Invalid rental ID.");
+}
+
 // Fetch booking details from Rentals and Car tables
 $sql = "SELECT Rentals.*, Car.brand, Car.model, Car.price_per_day FROM Rentals JOIN Car ON Rentals.car_id = Car.car_id WHERE Rentals.rental_id = ? AND Rentals.customer_id = ?";
 $stmt = $conn->prepare($sql);
@@ -24,8 +28,7 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $booking = $result->fetch_assoc();
 } else {
-    echo "Booking not found.";
-    exit();
+    die("Booking not found.");
 }
 
 // Fetch customer details
@@ -38,8 +41,7 @@ $result_customer = $stmt_customer->get_result();
 if ($result_customer->num_rows > 0) {
     $customer = $result_customer->fetch_assoc();
 } else {
-    echo "Customer not found.";
-    exit();
+    die("Customer not found.");
 }
 
 // Calculate total price
@@ -49,18 +51,23 @@ $interval = $pickup_date->diff($return_date);
 $days_rented = $interval->days;
 $total_price = $days_rented * $booking['price_per_day'];
 
+// Check for discount
+$discount_percentage = isset($_SESSION['discount_percentage']) ? $_SESSION['discount_percentage'] : 0;
+$discount_amount = ($discount_percentage / 100) * $total_price;
+$total_price_after_discount = $total_price - $discount_amount;
+
 // Save total price to the Rentals table
 $update_total_price_sql = "UPDATE Rentals SET total_price = ? WHERE rental_id = ?";
 $stmt_update = $conn->prepare($update_total_price_sql);
-$stmt_update->bind_param("di", $total_price, $rental_id);
+$stmt_update->bind_param("di", $total_price_after_discount, $rental_id);
 $stmt_update->execute();
 
 $conn->close();
 
 // Payment method and details
 $payment_method = $booking['payment_method'];
-$card_last_four = substr($booking['card_number'], -4);
-$card_name = $booking['card_name'];
+$card_last_four = $payment_method === 'credit_card' ? substr($booking['card_number'], -4) : null;
+$card_name = $payment_method === 'credit_card' ? htmlspecialchars($booking['card_name']) : null;
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +96,7 @@ $card_name = $booking['card_name'];
             <div class="invoice-header">
                 <h2>INVOICE</h2>
                 <div class="company-details">
-                    <p>123 Main Street Cityville,<br>CA 12345</p>
+                    <p>123 Main Street, Cityville, CA 12345</p>
                     <p>(555) 555-5555</p>
                     <p>info@eaglerental.com</p>
                 </div>
@@ -99,9 +106,9 @@ $card_name = $booking['card_name'];
                 </div>
             </div>
             <div class="customer-details">
-                <p><strong>Name:</strong> <?php echo $customer['first_name'] . " " . $customer['last_name']; ?></p>
-                <p><strong>Phone Number:</strong> <?php echo $customer['phone']; ?></p>
-                <p><strong>Email:</strong> <?php echo $customer['email']; ?></p>
+                <p><strong>Name:</strong> <?php echo htmlspecialchars($customer['first_name'] . " " . $customer['last_name']); ?></p>
+                <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($customer['phone']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($customer['email']); ?></p>
             </div>
             <div class="rental-details">
                 <table>
@@ -116,22 +123,26 @@ $card_name = $booking['card_name'];
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo $booking['brand'] . " " . $booking['model']; ?></td>
-                            <td><?php echo $booking['rental_date'] . " - " . $booking['return_date']; ?></td>
-                            <td>$<?php echo $booking['price_per_day']; ?></td>
+                            <td><?php echo htmlspecialchars($booking['brand'] . " " . $booking['model']); ?></td>
+                            <td><?php echo htmlspecialchars($booking['rental_date'] . " - " . $booking['return_date']); ?></td>
+                            <td>$<?php echo number_format($booking['price_per_day'], 2); ?></td>
                             <td><?php echo $days_rented; ?></td>
-                            <td>$<?php echo $total_price; ?></td>
+                            <td>$<?php echo number_format($total_price, 2); ?></td>
                         </tr>
                     </tbody>
                 </table>
-                <p><strong>Total:</strong> $<?php echo $total_price; ?></p>
+                <p><strong>Total:</strong> $<?php echo number_format($total_price, 2); ?></p>
+                <?php if ($discount_percentage > 0): ?>
+                    <p><strong>Discount:</strong> <?php echo $discount_percentage; ?>% (-$<?php echo number_format($discount_amount, 2); ?>)</p>
+                    <p><strong>Total After Discount:</strong> $<?php echo number_format($total_price_after_discount, 2); ?></p>
+                <?php endif; ?>
             </div>
             <div class="payment-method">
-                <p><strong>Payment Method:</strong> <?php echo ucfirst($booking['payment_method']); ?></p>
-                <?php if ($booking['payment_method'] === 'credit_card'): ?>
+                <p><strong>Payment Method:</strong> <?php echo ucfirst($payment_method); ?></p>
+                <?php if ($payment_method === 'credit_card'): ?>
                     <p><strong>Payment Details:</strong></p>
                     <p>Card Number: **** **** **** <?php echo $card_last_four; ?></p>
-                    <p>Cardholder Name: <?php echo htmlspecialchars($booking['card_name']); ?></p>
+                    <p>Cardholder Name: <?php echo $card_name; ?></p>
                 <?php endif; ?>
             </div>
             <button onclick="window.print()">Print Invoice</button>
