@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $return_date = filter_input(INPUT_POST, 'return_date', FILTER_SANITIZE_STRING);
     $return_time = filter_input(INPUT_POST, 'return_time', FILTER_SANITIZE_STRING);
     $payment_method = filter_input(INPUT_POST, 'payment_method', FILTER_SANITIZE_STRING);
+    $discount_code = filter_input(INPUT_POST, 'discount_code', FILTER_SANITIZE_STRING); // New field
 
     if (!$car_id || !$fullname || !$phone || !$email || !$pickup_date || !$pickup_time || !$return_date || !$return_time || !$payment_method) {
         die("Invalid input data.");
@@ -41,24 +42,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $card_cvc = null;
     }
 
+    // Fetch the discount percentage from the database if a discount code is provided
+    $discount_percentage = 0;
+    if ($discount_code) {
+        $sql_discount = "SELECT discount_percentage FROM Discounts WHERE discount_code = ?";
+        $stmt_discount = $conn->prepare($sql_discount);
+        $stmt_discount->bind_param("s", $discount_code);
+        $stmt_discount->execute();
+        $result_discount = $stmt_discount->get_result();
+
+        if ($result_discount->num_rows > 0) {
+            $discount_row = $result_discount->fetch_assoc();
+            $discount_percentage = $discount_row['discount_percentage'];
+        }
+        $stmt_discount->close();
+    }
+
+    // Calculate rental period
+    $pickup_date = new DateTime($pickup_date);
+    $return_date = new DateTime($return_date);
+    $interval = $pickup_date->diff($return_date);
+    $days_rented = $interval->days;
+
+    // Fetch the price per day
+    $sql_price = "SELECT price_per_day FROM Car WHERE car_id = ?";
+    $stmt_price = $conn->prepare($sql_price);
+    $stmt_price->bind_param("i", $car_id);
+    $stmt_price->execute();
+    $result_price = $stmt_price->get_result();
+
+    if ($result_price->num_rows > 0) {
+        $price_row = $result_price->fetch_assoc();
+        $price_per_day = $price_row['price_per_day'];
+    } else {
+        die("Car not found.");
+    }
+    $stmt_price->close();
+
+    // Calculate total price
+    $total_price = $days_rented * $price_per_day;
+
+    // Apply discount
+    $discount_amount = ($discount_percentage / 100) * $total_price;
+    $total_price_after_discount = $total_price - $discount_amount;
+
     // Insert booking details into Rentals table
-    $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method, card_number, card_name) VALUES (?, ?, ?, ?, ?, ?, 0, 'reserved', ?, ?, ?)";
+    $sql = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method, card_number, card_name) VALUES (?, ?, ?, ?, ?, ?, ?, 'reserved', ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
         die("Error preparing statement: " . $conn->error);
     }
-    $stmt->bind_param("iisssssss", $customer_id, $car_id, $pickup_date, $pickup_time, $return_date, $return_time, $payment_method, $card_number, $card_name);
+    $stmt->bind_param("iisssssss", $customer_id, $car_id, $pickup_date->format('Y-m-d'), $pickup_time, $return_date->format('Y-m-d'), $return_time, $total_price_after_discount, $payment_method, $card_number, $card_name);
 
     if ($stmt->execute()) {
         $rental_id = $stmt->insert_id;
 
         // Insert payment details into Payment table
-        $sql_payment = "INSERT INTO Payment (rental_id, amount, payment_date, payment_method) VALUES (?, 0, CURDATE(), ?)";
+        $sql_payment = "INSERT INTO Payment (rental_id, amount, payment_date, payment_method) VALUES (?, ?, CURDATE(), ?)";
         $stmt_payment = $conn->prepare($sql_payment);
         if ($stmt_payment === false) {
             die("Error preparing payment statement: " . $conn->error);
         }
-        $stmt_payment->bind_param("is", $rental_id, $payment_method);
+        $stmt_payment->bind_param("ids", $rental_id, $total_price_after_discount, $payment_method);
 
         if ($stmt_payment->execute()) {
             // Update the car status to indicate it is booked (false or 0)
