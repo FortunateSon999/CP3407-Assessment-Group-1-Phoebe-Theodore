@@ -1,41 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const chatBox = document.getElementById('chat-box');
-    const userInput = document.getElementById('user-input');
-
-    function sendMessage() {
-        const message = userInput.value.trim();
-        if (message === '') return;
-
-        // Display user message
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.classList.add('user-message');
-        userMessageDiv.textContent = message;
-        chatBox.appendChild(userMessageDiv);
-
-        // Clear input field
-        userInput.value = '';
-
-        // Simulate bot response
-        setTimeout(() => {
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.classList.add('bot-message');
-            botMessageDiv.textContent = "This is a simulated response.";
-            chatBox.appendChild(botMessageDiv);
-
-            // Scroll to the bottom of the chat box
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 1000);
-    }
-
-    document.querySelector('button').addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    });
-});
-
-
 // document.addEventListener('DOMContentLoaded', function() {
 //     const chatBox = document.getElementById('chat-box');
 //     const userInput = document.getElementById('user-input');
@@ -53,26 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
 //         // Clear input field
 //         userInput.value = '';
 
-//         // Send message to server
-//         fetch('chatbot_response.php', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ message: message })
-//         })
-//         .then(response => response.json())
-//         .then(data => {
-//             // Display bot response
+//         // Simulate bot response
+//         setTimeout(() => {
 //             const botMessageDiv = document.createElement('div');
 //             botMessageDiv.classList.add('bot-message');
-//             botMessageDiv.textContent = data.response;
+//             botMessageDiv.textContent = "This is a simulated response.";
 //             chatBox.appendChild(botMessageDiv);
 
 //             // Scroll to the bottom of the chat box
 //             chatBox.scrollTop = chatBox.scrollHeight;
-//         })
-//         .catch(error => console.error('Error:', error));
+//         }, 1000);
 //     }
 
 //     document.querySelector('button').addEventListener('click', sendMessage);
@@ -83,15 +35,63 @@ document.addEventListener('DOMContentLoaded', function() {
 //     });
 // });
 
-// function sendMessage() {
-//     const userInput = document.getElementById('user-input');
-//     const message = userInput.value.trim();
-//     if (message) {
-//         displayMessage(message, 'user');
-//         userInput.value = '';
-//         getBotResponse(message);
-//     }
-// }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (message === '') return;
+
+        // Display user message
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.classList.add('user-message');
+        userMessageDiv.textContent = message;
+        chatBox.appendChild(userMessageDiv);
+
+        // Clear input field
+        userInput.value = '';
+
+        // Send message to server
+        fetch('chatbot_response.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Display bot response
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('bot-message');
+            botMessageDiv.textContent = data.response;
+            chatBox.appendChild(botMessageDiv);
+
+            // Scroll to the bottom of the chat box
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    document.querySelector('button').addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    });
+});
+
+function sendMessage() {
+    const userInput = document.getElementById('user-input');
+    const message = userInput.value.trim();
+    if (message) {
+        displayMessage(message, 'user');
+        userInput.value = '';
+        getBotResponse(message);
+    }
+}
 
 
 
