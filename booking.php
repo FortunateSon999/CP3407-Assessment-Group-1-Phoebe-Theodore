@@ -6,6 +6,8 @@ if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
+$customer_id = $_SESSION['customer_id'];
+
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";
 $result = $conn->query($sql);
@@ -93,6 +95,12 @@ if ($result === FALSE) {
                         <input type="time" id="return_time" name="return_time" required>
                     </div>
                     <div class="form-group">
+                        <label for="discount_code">Discount Code</label>
+                        <input type="text" id="discount_code" name="discount_code" placeholder="Enter discount code">
+                        <button type="button" id="apply_discount">Apply Discount</button>
+                        <span id="discount_message"></span>
+                    </div>
+                    <div class="form-group">
                         <label for="payment_method">Payment Method</label>
                         <select id="payment_method" name="payment_method" required>
                             <option value="">Select a payment method</option>
@@ -137,32 +145,56 @@ if ($result === FALSE) {
         document.addEventListener('DOMContentLoaded', function() {
             var paymentMethodDropdown = document.getElementById('payment_method');
             paymentMethodDropdown.addEventListener('change', toggleCreditCardDetails);
-        });
 
-        function validateDates(event) {
-            var pickupDate = new Date(document.getElementById('pickup_date').value);
-            var returnDate = new Date(document.getElementById('return_date').value);
-            var currentDate = new Date();
-            currentDate.setHours(0, 0, 0, 0); // Set to start of the day
-            if (pickupDate < currentDate) {
-                alert("Pickup date cannot be before the current date.");
-                event.preventDefault();
-                return false;
+            document.getElementById('apply_discount').addEventListener('click', function() {
+                var discountCode = document.getElementById('discount_code').value;
+                if (discountCode) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'validate_discount.php', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            var discountMessage = document.getElementById('discount_message');
+                            if (response.success) {
+                                discountMessage.textContent = 'Discount applied: ' + response.discount_percent + '% off';
+                                discountMessage.style.color = 'green';
+                                document.getElementById('total_price').value = response.total_price; // Update total price if needed
+                            } else {
+                                discountMessage.textContent = response.message;
+                                discountMessage.style.color = 'red';
+                            }
+                        }
+                    };
+                    xhr.send('discount_code=' + discountCode);
+                }
+            });
+
+            function validateDates(event) {
+                var pickupDate = new Date(document.getElementById('pickup_date').value);
+                var returnDate = new Date(document.getElementById('return_date').value);
+                var currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0); // Set to start of the day
+                if (pickupDate < currentDate) {
+                    alert("Pickup date cannot be before the current date.");
+                    event.preventDefault();
+                    return false;
+                }
+                if (returnDate < currentDate) {
+                    alert("Return date cannot be before the current date.");
+                    event.preventDefault();
+                    return false;
+                }
+                if (returnDate < pickupDate) {
+                    alert("Return date cannot be before the pickup date.");
+                    event.preventDefault();
+                    return false;
+                }
+                return true;
             }
-            if (returnDate < currentDate) {
-                alert("Return date cannot be before the current date.");
-                event.preventDefault();
-                return false;
-            }
-            if (returnDate < pickupDate) {
-                alert("Return date cannot be before the pickup date.");
-                event.preventDefault();
-                return false;
-            }
-            return true;
-        }
-        // Add event listener to validate dates on form submission
-        document.querySelector('form').addEventListener('submit', validateDates);
+            // Add event listener to validate dates on form submission
+            document.querySelector('form').addEventListener('submit', validateDates);
+        });
     </script>
     <footer>
         <div class="container">
