@@ -10,19 +10,19 @@ if (!isset($_SESSION['customer_id'])) {
 $customer_id = $_SESSION['customer_id'];
 
 // Handle booking cancellation
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_booking_id'])) {
-    $cancel_booking_id = $_POST['cancel_booking_id'];
+// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_booking_id'])) {
+//     $cancel_booking_id = $_POST['cancel_booking_id'];
 
-    // Update the booking status to 'cancelled'
-    $cancel_booking_query = "UPDATE Rentals SET status = 'cancelled' WHERE rental_id = ? AND customer_id = ?";
-    $stmt = $conn->prepare($cancel_booking_query);
-    $stmt->bind_param("ii", $cancel_booking_id, $customer_id);
-    $stmt->execute();
+//     // Update the booking status to 'cancelled'
+//     $cancel_booking_query = "UPDATE Rentals SET status = 'cancelled' WHERE rental_id = ? AND customer_id = ?";
+//     $stmt = $conn->prepare($cancel_booking_query);
+//     $stmt->bind_param("ii", $cancel_booking_id, $customer_id);
+//     $stmt->execute();
 
-    // Redirect to avoid form resubmission
-    header("Location: mybooking.php");
-    exit();
-}
+//     // Redirect to avoid form resubmission
+//     header("Location: mybooking.php");
+//     exit();
+// }
 
 // Fetch current bookings
 $current_bookings_query = "SELECT r.*, r.created_at 
@@ -65,9 +65,9 @@ $past_bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                         <p>Return Time: <?php echo $booking['return_time']; ?></p>
                         <p>Total Price: $<?php echo $booking['total_price']; ?></p>
                         <p>Booking Created At: <?php echo $booking['created_at']; ?></p>
-                        <form method="post" action="mybooking.php">
-                            <input type="hidden" name="cancel_booking_id" value="<?php echo $booking['rental_id']; ?>">
-                            <button type="submit">Cancel Booking</button>
+                        <form action="cancel_booking.php" method="post">
+                            <input type="hidden" name="rental_id" value="<?php echo $booking['rental_id']; ?>">
+                            <input type="submit" name="cancel_booking" value="Cancel Booking" class="btn-cancel">
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -102,5 +102,3 @@ $past_bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     </div>
 </body>
 </html>
-
-

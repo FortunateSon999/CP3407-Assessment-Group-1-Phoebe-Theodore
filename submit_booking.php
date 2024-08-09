@@ -10,6 +10,52 @@ if (!isset($_SESSION['customer_id'])) {
 
 $customer_id = $_SESSION['customer_id'];
 
+function check_and_update_booking_status($conn) {
+    // Get current date and time
+    $current_date = new DateTime();
+    $current_time = $current_date->format('Y-m-d H:i:s');
+
+    // Update bookings that have expired and change their status to 'expired' 
+    // and the car status to available (1)
+    $sql = "UPDATE Rentals r
+            JOIN Car c ON r.car_id = c.car_id
+            SET r.status = 'expired', c.status = 1
+            WHERE r.return_date < CURDATE() OR (r.return_date = CURDATE() AND r.return_time < CURTIME()) 
+            AND r.status = 'reserved'";
+    
+    if ($conn->query($sql) === TRUE) {
+        echo "Expired bookings updated successfully.";
+    } else {
+        echo "Error updating record: " . $conn->error;
+    }
+
+    // Move expired bookings to the past bookings table if required.
+    // Assuming you have a past bookings table
+    $sql_past = "INSERT INTO Past_Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method)
+                SELECT customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method 
+                FROM Rentals 
+                WHERE status = 'expired'";
+    
+    if ($conn->query($sql_past) === TRUE) {
+        echo "Expired bookings moved to past bookings.";
+    } else {
+        echo "Error moving expired bookings: " . $conn->error;
+    }
+    
+    // Delete expired bookings from the Rentals table if they have been moved to Past_Rentals
+    $sql_delete = "DELETE FROM Rentals WHERE status = 'expired'";
+    
+    if ($conn->query($sql_delete) === TRUE) {
+        echo "Expired bookings deleted from current rentals.";
+    } else {
+        echo "Error deleting expired bookings: " . $conn->error;
+    }
+}
+
+// Call the function at the beginning of your script to ensure all statuses are updated before proceeding
+check_and_update_booking_status($conn);
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $car_id = $_POST['car_id'];
     $fullname = $_POST['fullname'];
