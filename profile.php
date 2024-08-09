@@ -2,10 +2,6 @@
 session_start();
 include 'db_connection.php';
 
-if (!isset($_SESSION['customer_id'])) {
-    header("Location: login.php");
-    exit();
-}
 
 $customer_id = $_SESSION['customer_id'];
 
@@ -34,31 +30,8 @@ if (isset($_POST['update_profile'])) {
             $message[] = 'Password updated successfully!';
         }
     }
-
-    if (isset($_FILES['update_image']) && $_FILES['update_image']['error'] == 0) {
-        $update_image = $_FILES['update_image']['name'];
-        $update_image_size = $_FILES['update_image']['size'];
-        $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
-        $update_image_folder = 'profiles/' . basename($update_image);
-
-        if ($update_image_size > 2000000) {
-            $message[] = 'Image is too large';
-        } else {
-            $image_update_query = mysqli_query($conn, "UPDATE `Customer` SET profile_picture = '$update_image_folder' WHERE customer_id = '$customer_id'") or die('Query failed');
-            if ($image_update_query) {
-                if (move_uploaded_file($update_image_tmp_name, $update_image_folder)) {
-                    $message[] = 'Image updated successfully!';
-                } else {
-                    $message[] = 'Failed to move uploaded file!';
-                }
-            } else {
-                $message[] = 'Failed to update image in database!';
-            }
-        }
-    }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,13 +53,8 @@ if (isset($_POST['update_profile'])) {
       }
    ?>
 
-   <form action="" method="post" enctype="multipart/form-data" class="update-profile-form">
+   <form action="" method="post" class="update-profile-form">
       <?php
-         if (isset($fetch['profile_picture']) && !empty($fetch['profile_picture'])) {
-            echo '<img src="'.$fetch['profile_picture'].'" alt="Profile Picture" class="profile-pic">';
-         } else {
-            echo '<img src="profiles/default.png" alt="Default Profile Picture" class="profile-pic">';
-         }
          if (isset($message)) {
             foreach ($message as $msg) {
                echo '<div class="message">'.$msg.'</div>';
@@ -96,20 +64,18 @@ if (isset($_POST['update_profile'])) {
       <div class="flex">
          <div class="inputBox">
             <span>First Name:</span>
-            <input type="text" name="update_first_name" value="<?php echo $fetch['first_name']; ?>" class="box">
+            <input type="text" name="update_first_name" value="<?php echo htmlspecialchars($fetch['first_name']); ?>" class="box">
             <span>Last Name:</span>
-            <input type="text" name="update_last_name" value="<?php echo $fetch['last_name']; ?>" class="box">
+            <input type="text" name="update_last_name" value="<?php echo htmlspecialchars($fetch['last_name']); ?>" class="box">
             <span>Email:</span>
-            <input type="email" name="update_email" value="<?php echo $fetch['email']; ?>" class="box">
+            <input type="email" name="update_email" value="<?php echo htmlspecialchars($fetch['email']); ?>" class="box">
             <span>Phone:</span>
-            <input type="text" name="update_phone" value="<?php echo $fetch['phone']; ?>" class="box">
+            <input type="text" name="update_phone" value="<?php echo htmlspecialchars($fetch['phone']); ?>" class="box">
             <span>Age:</span>
-            <input type="number" name="update_age" value="<?php echo $fetch['age']; ?>" class="box">
-            <span>Update your picture:</span>
-            <input type="file" name="update_image" accept="image/jpg, image/jpeg, image/png" class="box">
+            <input type="number" name="update_age" value="<?php echo htmlspecialchars($fetch['age']); ?>" class="box">
          </div>
          <div class="inputBox">
-            <input type="hidden" name="old_pass" value="<?php echo $fetch['password']; ?>">
+            <input type="hidden" name="old_pass" value="<?php echo htmlspecialchars($fetch['password']); ?>">
             <span>Old Password:</span>
             <input type="password" name="update_pass" placeholder="Enter previous password" class="box">
             <span>New Password:</span>
@@ -127,3 +93,4 @@ if (isset($_POST['update_profile'])) {
 
 </body>
 </html>
+

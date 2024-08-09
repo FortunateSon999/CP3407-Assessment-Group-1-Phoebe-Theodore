@@ -2,8 +2,18 @@
 session_start();
 include 'db_connection.php';
 
-// Fetch cars with status=1
-$sql = "SELECT * FROM Car WHERE status=1 LIMIT 5"; // Adjust the query as needed
+// Fetch search query
+$query = isset($_GET['query']) ? $_GET['query'] : '';
+
+// Prepare SQL query with a LIKE condition for general text search
+$sql = "SELECT * FROM Car WHERE status=1";
+if ($query) {
+    $query = $conn->real_escape_string($query);
+    $sql .= " AND (brand LIKE '%$query%' OR model LIKE '%$query%' OR fuel_type LIKE '%$query%')";
+}
+$sql .= " LIMIT 5"; // Adjust as needed
+
+// Execute the query
 $result = $conn->query($sql);
 
 $cars = [];
@@ -14,7 +24,7 @@ if ($result->num_rows > 0) {
 }
 
 // Fetch discounts
-$sql = "SELECT * FROM Discount"; // Adjust the query as needed
+$sql = "SELECT * FROM Discount"; // Adjust as needed
 $result = $conn->query($sql);
 
 $discounts = [];
@@ -69,8 +79,10 @@ $conn->close();
         <section class="search-bar">
             <div class="container">
                 <h2>Find Your Perfect Car</h2>
-                <input type="text" placeholder="Search for cars..." id="carSearchInput">
-                <button onclick="searchCars()">Search</button>
+                <form id="carSearchForm" method="GET">
+                    <input type="text" name="query" placeholder="Search for cars..." value="<?php echo isset($_GET['query']) ? htmlspecialchars($_GET['query']) : ''; ?>">
+                    <button type="submit">Search</button>
+                </form>
             </div>
         </section>
 
@@ -125,12 +137,5 @@ $conn->close();
             <p>&copy; 2024 Rent-A-Wheel. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        function searchCars() {
-            const input = document.getElementById('carSearchInput').value;
-            window.location.href = `search.php?query=${input}`;
-        }
-    </script>
 </body>
 </html>
