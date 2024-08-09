@@ -2,7 +2,6 @@
 session_start();
 include 'db_connection.php';
 
-
 $customer_id = $_SESSION['customer_id'];
 
 if (isset($_POST['update_profile'])) {
@@ -12,21 +11,34 @@ if (isset($_POST['update_profile'])) {
     $update_phone = mysqli_real_escape_string($conn, $_POST['update_phone']);
     $update_age = mysqli_real_escape_string($conn, $_POST['update_age']);
 
-    mysqli_query($conn, "UPDATE `Customer` SET first_name = '$update_first_name', last_name = '$update_last_name', email = '$update_email', phone = '$update_phone', age = '$update_age' WHERE customer_id = '$customer_id'") or die('Query failed');
+    // Update customer details
+    $stmt = $conn->prepare("UPDATE `Customer` SET first_name = ?, last_name = ?, email = ?, phone = ?, age = ? WHERE customer_id = ?");
+    $stmt->bind_param("ssssii", $update_first_name, $update_last_name, $update_email, $update_phone, $update_age, $customer_id);
+    $stmt->execute();
 
+    // Password change logic
     $old_pass = md5($_POST['old_pass']);
     $update_pass = mysqli_real_escape_string($conn, $_POST['update_pass']);
     $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
     $confirm_pass = mysqli_real_escape_string($conn, $_POST['confirm_pass']);
 
     if (!empty($update_pass) || !empty($new_pass) || !empty($confirm_pass)) {
-        if (md5($update_pass) != $old_pass) {
+        $stmt = $conn->prepare("SELECT password FROM `Customer` WHERE customer_id = ?");
+        $stmt->bind_param("i", $customer_id);
+        $stmt->execute();
+        $stmt->bind_result($stored_pass);
+        $stmt->fetch();
+        $stmt->close();
+
+        if (md5($update_pass) != $stored_pass) {
             $message[] = 'Old password not matched!';
         } elseif ($new_pass != $confirm_pass) {
             $message[] = 'Confirm password not matched!';
         } else {
             $hashed_new_pass = md5($confirm_pass);
-            mysqli_query($conn, "UPDATE `Customer` SET password = '$hashed_new_pass' WHERE customer_id = '$customer_id'") or die('Query failed');
+            $stmt = $conn->prepare("UPDATE `Customer` SET password = ? WHERE customer_id = ?");
+            $stmt->bind_param("si", $hashed_new_pass, $customer_id);
+            $stmt->execute();
             $message[] = 'Password updated successfully!';
         }
     }
@@ -47,9 +59,13 @@ if (isset($_POST['update_profile'])) {
 <div class="update-profile-container">
 
    <?php
-      $select = mysqli_query($conn, "SELECT * FROM `Customer` WHERE customer_id = '$customer_id'") or die('Query failed');
-      if (mysqli_num_rows($select) > 0) {
-         $fetch = mysqli_fetch_assoc($select);
+      $stmt = $conn->prepare("SELECT * FROM `Customer` WHERE customer_id = ?");
+      $stmt->bind_param("i", $customer_id);
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      if ($result->num_rows > 0) {
+         $fetch = $result->fetch_assoc();
       }
    ?>
 
@@ -75,7 +91,6 @@ if (isset($_POST['update_profile'])) {
             <input type="number" name="update_age" value="<?php echo htmlspecialchars($fetch['age']); ?>" class="box">
          </div>
          <div class="inputBox">
-            <input type="hidden" name="old_pass" value="<?php echo htmlspecialchars($fetch['password']); ?>">
             <span>Old Password:</span>
             <input type="password" name="update_pass" placeholder="Enter previous password" class="box">
             <span>New Password:</span>
