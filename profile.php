@@ -29,20 +29,32 @@ if (isset($_POST['update_profile'])) {
         $stmt->fetch();
         $stmt->close();
 
-        if (md5($old_pass) != $stored_pass) {
-            $message[] = 'Old password not matched!';
-        } elseif ($new_pass != $confirm_pass) {
-            $message[] = 'Confirm password not matched!';
-        } else {
-            $hashed_new_pass = md5($confirm_pass);
-            $stmt = $conn->prepare("UPDATE `Customer` SET password = ? WHERE customer_id = ?");
-            $stmt->bind_param("si", $hashed_new_pass, $customer_id);
-            $stmt->execute();
-            $message[] = 'Password updated successfully!';
-        }
-    }
+        // Debugging: Check the hashed old password
+        // Verify the old password
+        if (!password_verify($old_pass, $stored_pass)) {
+         $message[] = 'Old password not matched!';
+     } elseif ($new_pass != $confirm_pass) {
+         $message[] = 'Confirm password not matched!';
+     } else {
+         // Hash the new password before storing it
+         $hashed_new_pass = password_hash($confirm_pass, PASSWORD_DEFAULT);
+         $stmt = $conn->prepare("UPDATE `Customer` SET password = ? WHERE customer_id = ?");
+         $stmt->bind_param("si", $hashed_new_pass, $customer_id);
+
+         if ($stmt->execute()) {
+             if ($stmt->affected_rows > 0) {
+                 $message[] = 'Password updated successfully!';
+             } else {
+                 $message[] = 'Password update failed or no changes were made!';
+             }
+         } else {
+             $message[] = 'Error: ' . $stmt->error;
+         }
+     }
+ }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
