@@ -34,7 +34,7 @@ if (isset($_POST['cancel_booking'])) {
         $stmt_update_car_status->execute();
 
         // Redirect to a cancellation confirmation page or show a message
-        header("Location: cancellation_confirm.php?rental_id=" . $rental_id);
+        header("Location: mybooking.php?rental_id=" . $rental_id);
         exit();
     } else {
         echo "Cancellation Error: " . $stmt_cancel->error;
