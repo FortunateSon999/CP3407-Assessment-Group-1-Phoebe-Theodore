@@ -17,12 +17,11 @@ if (isset($_POST['update_profile'])) {
     $stmt->execute();
 
     // Password change logic
-    $old_pass = md5($_POST['old_pass']);
-    $update_pass = mysqli_real_escape_string($conn, $_POST['update_pass']);
+    $old_pass = mysqli_real_escape_string($conn, $_POST['old_pass']);
     $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
     $confirm_pass = mysqli_real_escape_string($conn, $_POST['confirm_pass']);
 
-    if (!empty($update_pass) || !empty($new_pass) || !empty($confirm_pass)) {
+    if (!empty($old_pass) || !empty($new_pass) || !empty($confirm_pass)) {
         $stmt = $conn->prepare("SELECT password FROM `Customer` WHERE customer_id = ?");
         $stmt->bind_param("i", $customer_id);
         $stmt->execute();
@@ -30,7 +29,7 @@ if (isset($_POST['update_profile'])) {
         $stmt->fetch();
         $stmt->close();
 
-        if (md5($update_pass) != $stored_pass) {
+        if (md5($old_pass) != $stored_pass) {
             $message[] = 'Old password not matched!';
         } elseif ($new_pass != $confirm_pass) {
             $message[] = 'Confirm password not matched!';
@@ -92,7 +91,7 @@ if (isset($_POST['update_profile'])) {
          </div>
          <div class="inputBox">
             <span>Old Password:</span>
-            <input type="password" name="update_pass" placeholder="Enter previous password" class="box">
+            <input type="password" name="old_pass" placeholder="Enter previous password" class="box">
             <span>New Password:</span>
             <input type="password" name="new_pass" placeholder="Enter new password" class="box">
             <span>Confirm Password:</span>

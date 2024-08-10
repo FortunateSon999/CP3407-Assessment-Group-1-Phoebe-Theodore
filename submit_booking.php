@@ -31,7 +31,7 @@ function check_and_update_booking_status($conn) {
 
     // Move expired bookings to the past bookings table if required.
     // Assuming you have a past bookings table
-    $sql_past = "INSERT INTO Past_Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method)
+    $sql_past = "INSERT INTO Rentals (customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method)
                 SELECT customer_id, car_id, rental_date, pickup_time, return_date, return_time, total_price, status, payment_method 
                 FROM Rentals 
                 WHERE status = 'expired'";
