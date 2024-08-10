@@ -1,7 +1,3 @@
-<?php
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +5,8 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot - Rent-A-Wheel</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -32,18 +30,15 @@ session_start();
         </div>
     </header>
 
-    <main>
-        <section class="chatbot">
-            <div class="container">
-                <h2>Chat with Us</h2>
-                <div class="chat-box" id="chat-box">
-                    <!-- Chat messages will appear here -->
-                </div>
-                <input type="text" id="user-input" placeholder="Type a message...">
-                <button onclick="sendMessage()">Send</button>
-            </div>
-        </section>
-    </main>
+    <div class="chat-container">
+        <h2>Welcome to Rent-A-Wheel Chatbot!</h2>
+        <p>How can I assist you today?</p>
+        <div id="chat-box"></div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
@@ -51,6 +46,59 @@ session_start();
         </div>
     </footer>
 
-    <script src="chatbot.js"></script>
+    <script>
+        $(document).ready(function(){
+            function scrollToBottom() {
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+            }
+
+            function sendMessage() {
+                var userInput = $('#user-input').val().trim();
+                if (userInput) {
+                    $('#chat-box').append('<div class="user-message"><i class="fas fa-user-circle"></i><div class="message">' + userInput + '</div></div>');
+                    scrollToBottom();
+                    $.ajax({
+                        url: 'chatbot_backend.php',
+                        method: 'POST',
+                        data: {message: userInput},
+                        beforeSend: function() {
+                            // Optional: Show a typing indicator
+                            $('#chat-box').append('<div class="bot-response typing-indicator"><i class="fas fa-robot"></i><div class="message">Bot is typing...</div></div>');
+                            scrollToBottom();
+                        },
+                        success: function(response){
+                            // Remove the typing indicator
+                            $('.typing-indicator').remove();
+
+                            // Append the bot response
+                            $('#chat-box').append('<div class="bot-response"><i class="fas fa-robot"></i><div class="message">' + response + '</div></div>');
+                            $('#user-input').val('');
+                            scrollToBottom();
+                        },
+                        error: function() {
+                            // Optional: Handle any errors
+                            $('.typing-indicator').remove();
+                            $('#chat-box').append('<div class="bot-response"><i class="fas fa-robot"></i><div class="message">Sorry, something went wrong. Please try again.</div></div>');
+                            scrollToBottom();
+                        }
+                    });
+                }
+            }
+
+            // Trigger send on button click
+            $('#send-button').on('click', function(){
+                sendMessage();
+            });
+
+            // Trigger send on pressing "Enter" key
+            $('#user-input').on('keypress', function(e){
+                if(e.which == 13) {
+                    sendMessage();
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
+
