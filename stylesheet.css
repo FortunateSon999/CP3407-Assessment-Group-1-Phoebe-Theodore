@@ -940,7 +940,28 @@ button {
 button:hover {
     background-color: #d32f2f;
 }
+
 /* Review style */
+.back-to-cars {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    margin-top: 20px; /* Add some margin at the top */
+}
+
+.back-to-cars button {
+    background: var(--primary-color);
+    color: var(--color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.back-to-cars button:hover {
+    background: #0c2646;
+}
+
 
 
 /* my booking style */
@@ -985,7 +1006,7 @@ button:hover {
     justify-content: center;
 }
 
-.booking button {
+.btn-cancel button {
     background: var(--secondary-color);
     color: var(--color);
     border: none;
@@ -995,7 +1016,7 @@ button:hover {
     transition: background 0.3s;
 }
 
-.booking button:hover {
+.btn-cancel button:hover {
     background: #b5374c;
 }
 
@@ -1117,7 +1138,7 @@ button:hover {
     align-items: center;
     min-height: 100vh;
     background: var(--background);
-    color: var(--color);
+    color: #000;
     padding: 20px;
 }
 
@@ -1244,9 +1265,10 @@ button:hover {
 
 /* Chatbot styles */
 .chat-container {
-    margin-top: 100px;
-    width: 400px;
-    max-width: 90%;
+    margin: center;
+    margin-top: 150px;
+    /* width: 400px; */
+    max-width: 100%;
     background-color: #666; /* Replace with actual color */
     padding: 20px;
     border-radius: 10px;

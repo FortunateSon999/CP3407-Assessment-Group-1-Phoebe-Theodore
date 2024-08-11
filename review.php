@@ -86,11 +86,7 @@ if ($review_count > 0) {
 
 
     <link rel="stylesheet" href="stylesheet.css">
-    <style>
-        .star-light {
-            color: #e9ecef;
-        }
-    </style>
+    
 </head>
 <body>
 <div class="container">
@@ -180,6 +176,10 @@ if ($review_count > 0) {
             </div>
         </div>
     </div>
+</div>
+
+<div class="back-to-cars">
+    <a href="car_details.php?car_id=<?php echo htmlspecialchars($review['car_id']); ?>" class="button">Back</a>
 </div>
 
 <script>
