@@ -14,7 +14,10 @@ try {
 }
 
 // Assuming customer_id is stored in the session after login
-include 'login_restriction.php';
+if (!isset($_SESSION['customer_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 $customer_id = $_SESSION['customer_id'];
 
@@ -149,7 +152,7 @@ if ($review_count > 0) {
                 </button>
             </div>
             <div class="modal-body">
-                <h4 class="text-center mt-2 mb-4">
+                <h4 class="text-center mt-2 mb-4"  style="color:#808080">
                     <?php for ($i = 1; $i <= 5; $i++) : ?>
                         <i class="fas fa-star star-light submit_star mr-1" id="submit_star_<?php echo $i; ?>" data-rating="<?php echo $i; ?>"></i>
                     <?php endfor; ?>

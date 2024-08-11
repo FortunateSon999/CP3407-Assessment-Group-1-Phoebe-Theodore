@@ -2,11 +2,11 @@
 session_start();
 require 'db_connection.php'; 
 
-// if (!isset($_SESSION['customer_id'])) {
-//     header('Location: login.php');
-//     exit();
-// }
-include 'login_restriction.php';
+if (!isset($_SESSION['customer_id'])) {
+    header('Location: login.php');
+    exit();
+}
+// include 'login_restriction.php';
 
 $customer_id = $_SESSION['customer_id'];
 

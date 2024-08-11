@@ -905,7 +905,7 @@ footer p {
     margin-top: 20px;
 }
 
-.rental-details table thead {
+.rental-details table {
     background: var(--accent-color);
     color: #000;
 }

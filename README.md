@@ -1,18 +1,9 @@
-How to edit this: 
-* Option-1 (tested and worked ok): PyCharm supports editing of these .md files. Then you need to push to the main branch or make a pull request.
-* Option-2 (tested ok): Edit and commit it directly on github. Then any local repo copies will need to be "updated".
-
-# cp3407-project template [Delete or change to your team/project name before submitting]
+# cp3407-project template 
 
 This a project assignment template for CP3407. 
 The following is the list of items, which are required to be completed.
 
-## How to submit [You may delete this before submitting]
-
-1. Download your github repository as a zip file and submit via LearnJCU.
-2. Add your instructor (dasheng.liu@jcu.edu.au Dasheng LIU) as a team member to view your project on github
-
-## Team
+## Team (Group 1)
 
 It is recommended to complete this assignment in a group of maximum 3 students.
 1. Chung Sheng Ni Phoebe [14351028]

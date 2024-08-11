@@ -4,11 +4,11 @@ include 'db_connection.php';
 
 
 // Check if customer is logged in
-// if (!isset($_SESSION['customer_id'])) {
-//     header("Location: login.php");
-//     exit();
-// }
-include 'login_restriction.php';
+if (!isset($_SESSION['customer_id'])) {
+    header("Location: login.php");
+    exit();
+}
+// include 'login_restriction.php';
 
 $customer_id = $_SESSION['customer_id'];
 
