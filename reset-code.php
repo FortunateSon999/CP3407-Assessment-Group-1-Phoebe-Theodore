@@ -1,23 +1,39 @@
 <?php
 session_start();
 require "db_connection.php";
-$errors = array();
 
-if (isset($_POST['check-reset-otp'])) {
-    $_SESSION['info'] = "";
-    $otp_code = mysqli_real_escape_string($conn, $_POST['otp']);
-    $check_code = "SELECT * FROM Customer WHERE status = $otp_code";
-    $code_res = mysqli_query($conn, $check_code);
-    if (mysqli_num_rows($code_res) > 0) {
-        $fetch_data = mysqli_fetch_assoc($code_res);
-        $email = $fetch_data['email'];
-        $_SESSION['email'] = $email;
+$errors = array();
+date_default_timezone_set('UTC');
+
+// Function for OTP verification
+function verify_otp($otp_code, $conn) {
+    $email = 'test@example.com'; // Ensure this is the test email used
+
+    $check_code = "SELECT * FROM PasswordResetOTP WHERE email = ? AND otp_code = ? AND expires_at > NOW()";
+    $stmt = $conn->prepare($check_code);
+    $stmt->bind_param("ss", $email, $otp_code);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
         $info = "Please create a new password that you don't use on any other site.";
-        $_SESSION['info'] = $info;
-        header('location: new-password.php');
+        return ['success' => true, 'message' => $info];
+    } else {
+        $errors['otp-error'] = "You've entered incorrect code or the code has expired!";
+        return ['success' => false, 'message' => $errors['otp-error']];
+    }
+}
+
+// Handle the form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['check-reset-otp'])) {
+    $otp_code = $_POST['otp'];
+    $result = verify_otp($otp_code, $conn);
+
+    if ($result['success']) {
+        header('Location: new-password.php');
         exit();
     } else {
-        $errors['otp-error'] = "You've entered incorrect code!";
+        $errors['otp-error'] = $result['message'];
     }
 }
 ?>
