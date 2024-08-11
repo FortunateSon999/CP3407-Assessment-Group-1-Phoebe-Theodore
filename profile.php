@@ -2,6 +2,8 @@
 session_start();
 include 'db_connection.php';
 
+
+
 $customer_id = $_SESSION['customer_id'];
 
 if (isset($_POST['update_profile'])) {

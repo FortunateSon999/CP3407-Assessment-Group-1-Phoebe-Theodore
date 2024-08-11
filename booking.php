@@ -3,10 +3,12 @@ session_start();
 include 'db_connection.php';
 
 // Check if customer is logged in
-if (!isset($_SESSION['customer_id'])) {
-    header("Location: login.php");
-    exit();
-}
+// if (!isset($_SESSION['customer_id'])) {
+//     header("Location: login.php");
+//     exit();
+// }
+
+include 'login_restriction.php';
 
 // Fetch available cars
 $sql = "SELECT car_id, brand, model, price_per_day FROM Car WHERE status = 1";

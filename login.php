@@ -1,7 +1,10 @@
 <?php
 session_start(); // Start the session
 
-include 'db_connection.php';
+// If $conn is not passed, include db_connection.php for a real connection
+if (!isset($conn)) {
+    include 'db_connection.php';
+}
 
 $error_message = "";
 

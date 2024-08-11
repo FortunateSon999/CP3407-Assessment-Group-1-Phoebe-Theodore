@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php'; // Your database connection file
+include 'db_connection.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userMessage = strtolower(trim($_POST['message']));
