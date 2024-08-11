@@ -131,7 +131,7 @@ if ($discountResult === FALSE) {
                             <option value="cash">Cash</option>
                         </select>
                     </div>
-                    <div id="credit_card_details" style="display: none;">
+                    <div id="credit_card_details" style="display: none;" class="form-group">
                         <div class="form-group">
                             <label for="card_name">Name on Card</label>
                             <input type="text" id="card_name" name="card_name" placeholder="Enter the name on your card">
